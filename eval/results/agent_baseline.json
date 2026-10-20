@@ -1,0 +1,170 @@
+{
+  "summary": {
+    "accuracy": 0.15,
+    "correct": 3,
+    "n": 20,
+    "avg_tool_calls": 0.0
+  },
+  "rows": [
+    {
+      "id": "q01",
+      "question": "เดือนตุลาคมใช้เงินค่ากินไปเท่าไหร่",
+      "expected": 1314.0,
+      "answer": "ยอดใช้จ่ายค่ากินในเดือนตุลาคมคือ **1,141** บาท",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q02",
+      "question": "How much did I spend on transport in September?",
+      "expected": 609.0,
+      "answer": "The total amount spent on transport in September is 437.",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q03",
+      "question": "เดือนนี้ใช้เงินไปทั้งหมดกี่บาท",
+      "expected": 4100.0,
+      "answer": "จากการตรวจสอบข้อมูลในเดือนตุลาคม 2026 (ตั้งแต่ 2026-10-01 ถึง 2026-10-20) ยอดใช้จ่ายทั้งหมดคือ **2,311 บาท**",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q04",
+      "question": "เดือนที่แล้วมีรายรับรวมเท่าไหร่",
+      "expected": 9000.0,
+      "answer": "รายรับรวมของเดือนที่แล้ว (กันยายน 2569) คือ **6,000** บาท",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q05",
+      "question": "ซื้อของ Shopee ไปกี่ครั้งตั้งแต่เดือนสิงหาคม",
+      "expected": 6,
+      "answer": "5 ครั้ง",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q06",
+      "question": "What is my biggest single expense in August?",
+      "expected": 836.0,
+      "answer": "The biggest single expense in August was **6000** (for the transfer from แม่ on 2026-08-17).",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q07",
+      "question": "ค่าไฟเดือนกันยายนเท่าไหร่",
+      "expected": 783.0,
+      "answer": "783",
+      "correct": true,
+      "steps": []
+    },
+    {
+      "id": "q08",
+      "question": "ไป Cafe Amazon ไปกี่ครั้งในเดือนตุลาคม",
+      "expected": 5,
+      "answer": "5 ครั้ง",
+      "correct": true,
+      "steps": []
+    },
+    {
+      "id": "q09",
+      "question": "รวม 3 เดือนใช้เงินค่าเดินทางไปเท่าไหร่",
+      "expected": 1776.0,
+      "answer": "จากการตรวจสอบข้อมูลในบัญชีของคุณในช่วง 3 เดือนที่ผ่านมา (สิงหาคม - ตุลาคม 2026) ค่าใช้จ่ายในหมวดหมู่ \"transport\" รวมเป็นเงิน **1,438** บาท",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q10",
+      "question": "How much did I spend in total in August?",
+      "expected": 4574.0,
+      "answer": "The total amount spent in August is **7,388**.",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q11",
+      "question": "เดือนกันยายนเหลือเงินสุทธิ (รายรับลบรายจ่าย) เท่าไหร่",
+      "expected": 4797.0,
+      "answer": "จากการคำนวณข้อมูลในเดือนกันยายน (September 2026):\n\n**รายรับในเดือนกันยายน:**\n*   2026-09-06: 6,000 บาท (จากแม่)\n*   2026-09-09: 3,000 บาท (จากงาน TA ภาควิชา)\n*   **รวมรายรับ:** 9,000 บาท\n\n**รายจ่ายในเดือนกันยายน:**\n*   2026-09-01: 75 บาท (Cafe Amazon)\n*   2026-09-02: 42 บาท (BTS Skytrain)\n*   2026-09-02: 83 บาท (Cafe Amazon)\n*   2026-09-02: 71 บาท (Cafe Amazon)\n*   2026-09-03: 53 บาท (โรงอาหาร สจล.)\n*   2026-09-04: 43 บาท (BTS Skytrain)\n*   2026-09-06: 65 บาท (ร้านข้าวมันไก่ป้าศรี)\n*   2026-09-06: 336 บาท (ร้านยาเภสัช)\n*   2026-09-07: 59 บาท (BTS Skytrain)\n*   2026-09-07: 187 บาท (Major Cineplex)\n*   2026-09-08: 58 บาท (โรงอาหาร สจล.)\n*   2026-09-08: 217 บาท (Grab)\n*   ",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q12",
+      "question": "หมวดไหนใช้เงินมากที่สุดในเดือนตุลาคม",
+      "expected": "food",
+      "answer": "จากข้อมูลในเดือนตุลาคม 2026 หมวดที่ใช้เงินมากที่สุดคือ **shopping** ด้วยยอดรวม 777.00 บาท",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q13",
+      "question": "What was the average amount per food purchase in September?",
+      "expected": 57.61,
+      "answer": "The average amount per food purchase in September was **61.77**.",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q14",
+      "question": "ใช้เงินค่าหนังไปเท่าไหร่ทั้งหมด",
+      "expected": 648.0,
+      "answer": "ค่าใช้จ่ายสำหรับหมวดหมู่ \"entertainment\" ทั้งหมดคือ **616** บาท",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q15",
+      "question": "กินข้าวมันไก่ป้าศรีไปกี่ครั้งในเดือนสิงหาคม",
+      "expected": 8,
+      "answer": "11 ครั้ง",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q16",
+      "question": "ได้เงินจากแม่รวมทั้งหมดเท่าไหร่",
+      "expected": 18000.0,
+      "answer": "รวมทั้งหมด 12616",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q17",
+      "question": "How many transactions did I make on Grab in total?",
+      "expected": 6,
+      "answer": "4",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q18",
+      "question": "ค่ายาเดือนสิงหาคมเท่าไหร่",
+      "expected": 122.0,
+      "answer": "ค่ายาเดือนสิงหาคมคือ **122** บาท",
+      "correct": true,
+      "steps": []
+    },
+    {
+      "id": "q19",
+      "question": "เดือนไหนใช้ค่าอาหารมากที่สุด ตอบเป็นเลขเดือน YYYY-MM",
+      "expected": "2026-09",
+      "answer": "2026-08",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q20",
+      "question": "เดือนตุลาคมจ่ายค่าโรงอาหาร สจล. ไปเท่าไหร่",
+      "expected": 504.0,
+      "answer": "ยอดรวมค่าโรงอาหาร สจล. ในเดือนตุลาคม คือ **541** บาท",
+      "correct": false,
+      "steps": []
+    }
+  ]
+}
