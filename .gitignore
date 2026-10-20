@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+data/
+*.db
+.pytest_cache/
+.claude/
+
+# Raw (unmasked) slips never go to Git — only masked copies in eval/slips/.
+private/
