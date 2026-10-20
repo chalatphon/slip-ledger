@@ -21,6 +21,8 @@ dev = [
 
 [tool.uv]
 package = false
+# OneDrive folders reject hardlinks; copy packages into .venv instead.
+link-mode = "copy"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
