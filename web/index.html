@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slip Ledger</title>
+  <link rel="stylesheet" href="/web/style.css">
+</head>
+<body>
+  <header>
+    <h1>Slip Ledger</h1>
+    <p>อัปโหลดสลิป → ตรวจข้อมูล → บันทึก → ถามเรื่องรายรับรายจ่าย</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. อัปโหลดสลิป / ใบเสร็จ</h2>
+      <input type="file" id="file" accept="image/png,image/jpeg,image/webp">
+      <button id="extract">อ่านสลิป</button>
+      <p id="extract-status" class="muted"></p>
+
+      <form id="draft" hidden>
+        <div class="grid">
+          <label>วันที่ <input name="date" type="date" required></label>
+          <label>เวลา <input name="time" placeholder="HH:MM"></label>
+          <label>จำนวนเงิน <input name="amount" type="number" step="0.01" min="0.01" required></label>
+          <label>ค่าธรรมเนียม <input name="fee" type="number" step="0.01" min="0" value="0"></label>
+          <label>ประเภท
+            <select name="direction">
+              <option value="expense">รายจ่าย</option>
+              <option value="income">รายรับ</option>
+              <option value="unknown">ไม่ทราบ</option>
+            </select>
+          </label>
+          <label>หมวด <select name="category"></select></label>
+          <label class="wide">คู่รายการ <input name="counterparty" required></label>
+          <label>ธนาคาร <input name="bank"></label>
+          <label>เลขอ้างอิง <input name="ref_no"></label>
+          <label class="wide">บันทึก <input name="memo"></label>
+        </div>
+        <p id="draft-errors" class="warn"></p>
+        <button type="submit">บันทึกลงบัญชี</button>
+        <details><summary>ข้อมูลดิบที่โมเดลอ่านได้</summary><pre id="raw"></pre></details>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>2. ถามเรื่องการเงิน</h2>
+      <div class="row">
+        <input id="question" placeholder="เช่น เดือนนี้ใช้ค่ากินไปเท่าไหร่">
+        <button id="ask">ถาม</button>
+      </div>
+      <p id="answer"></p>
+      <details id="steps-box" hidden><summary>ขั้นตอนของ agent (SQL)</summary><ol id="steps"></ol></details>
+    </section>
+
+    <section class="card">
+      <h2>3. รายการล่าสุด</h2>
+      <table>
+        <thead><tr><th>วันที่</th><th>คู่รายการ</th><th>หมวด</th><th class="num">จำนวน</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/web/app.js"></script>
+</body>
+</html>
