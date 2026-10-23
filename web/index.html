@@ -15,11 +15,28 @@
   <main>
     <section class="card">
       <h2>1. อัปโหลดสลิป / ใบเสร็จ</h2>
-      <input type="file" id="file" accept="image/png,image/jpeg,image/webp">
-      <button id="extract">อ่านสลิป</button>
+      <p class="muted">เลือกได้หลายรูปพร้อมกัน (สูงสุด 20 รูปต่อครั้ง)</p>
+      <div class="row">
+        <input type="file" id="files" accept="image/png,image/jpeg,image/webp" multiple>
+        <button id="extract">อ่านสลิป</button>
+      </div>
       <p id="extract-status" class="muted"></p>
+      <div id="batch-actions" hidden>
+        <button id="save-all">บันทึกทุกรายการที่พร้อม</button>
+        <button id="clear-drafts" class="secondary">ล้างรายการที่ค้าง</button>
+      </div>
+      <div id="drafts"></div>
+    </section>
 
-      <form id="draft" hidden>
+    <template id="draft-template">
+      <form class="draft">
+        <div class="draft-head">
+          <img class="thumb" alt="">
+          <div>
+            <strong class="fname"></strong>
+            <p class="status muted"></p>
+          </div>
+        </div>
         <div class="grid">
           <label>วันที่ <input name="date" type="date" required></label>
           <label>เวลา <input name="time" placeholder="HH:MM"></label>
@@ -38,11 +55,14 @@
           <label>เลขอ้างอิง <input name="ref_no"></label>
           <label class="wide">บันทึก <input name="memo"></label>
         </div>
-        <p id="draft-errors" class="warn"></p>
-        <button type="submit">บันทึกลงบัญชี</button>
-        <details><summary>ข้อมูลดิบที่โมเดลอ่านได้</summary><pre id="raw"></pre></details>
+        <p class="errors warn"></p>
+        <div class="row">
+          <button type="submit">บันทึก</button>
+          <button type="button" class="skip secondary">ข้าม</button>
+        </div>
+        <details><summary>ข้อมูลดิบที่โมเดลอ่านได้</summary><pre class="raw"></pre></details>
       </form>
-    </section>
+    </template>
 
     <section class="card">
       <h2>2. ถามเรื่องการเงิน</h2>

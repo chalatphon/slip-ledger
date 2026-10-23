@@ -33,3 +33,13 @@ th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--bord
 td button { background: none; color: var(--muted); padding: 2px 6px; }
 #steps li { margin-bottom: 8px; }
 #steps code { display: block; font-size: .8rem; }
+button.secondary { background: none; color: var(--text); border: 1px solid var(--border); }
+#batch-actions { display: flex; gap: 8px; margin: 8px 0; }
+#batch-actions[hidden] { display: none; }
+.draft { border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 12px; }
+.draft.saved { opacity: .55; }
+.draft.failed { border-color: var(--warn); }
+.draft-head { display: flex; gap: 12px; align-items: center; }
+.draft-head p { margin: 2px 0 0; }
+.thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+.draft .row { margin-top: 8px; }

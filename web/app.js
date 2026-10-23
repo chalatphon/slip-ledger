@@ -3,9 +3,9 @@
 const $ = (id) => document.getElementById(id);
 const CATEGORIES = ["food", "transport", "shopping", "bills", "health", "education",
   "entertainment", "transfer", "salary", "other"];
-const form = $("draft");
-
-form.category.append(...CATEGORIES.map((c) => new Option(c, c)));
+const FIELDS = ["date", "time", "amount", "fee", "direction", "category", "counterparty", "bank", "ref_no", "memo"];
+const MAX_FILES = 20;
+const PARALLEL = 2; // stay well under the proxy's rate limit
 
 async function api(path, options = {}) {
   const r = await fetch(path, options);
@@ -14,46 +14,108 @@ async function api(path, options = {}) {
   return body;
 }
 
-// 1. upload -> draft
-$("extract").onclick = async () => {
-  const file = $("file").files[0];
-  if (!file) return;
+// 1. upload several images -> one editable draft card per image
+function newDraftCard(file) {
+  const form = $("draft-template").content.firstElementChild.cloneNode(true);
+  form.category.append(...CATEGORIES.map((c) => new Option(c, c)));
+  form.querySelector(".fname").textContent = file.name;
+  const img = form.querySelector(".thumb");
+  img.src = URL.createObjectURL(file);
+  img.onload = () => URL.revokeObjectURL(img.src);
+  form.querySelector(".status").textContent = "รอคิว…";
+  form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = true));
+  form.onsubmit = (ev) => { ev.preventDefault(); saveDraft(form); };
+  form.querySelector(".skip").onclick = () => { form.remove(); updateBatchActions(); };
+  $("drafts").append(form);
+  return form;
+}
+
+function setStatus(form, text, cls) {
+  form.querySelector(".status").textContent = text;
+  form.classList.remove("saved", "failed");
+  if (cls) form.classList.add(cls);
+}
+
+async function extractInto(form, file) {
+  setStatus(form, "กำลังอ่าน…");
   const fd = new FormData();
   fd.append("image", file);
-  $("extract").disabled = true;
-  $("extract-status").textContent = "กำลังอ่านสลิป…";
   try {
     const res = await api("/api/extract", { method: "POST", body: fd });
     const d = res.draft || {};
-    for (const k of ["date", "time", "amount", "fee", "direction", "category", "counterparty", "bank", "ref_no", "memo"]) {
-      form[k].value = d[k] ?? (k === "fee" ? "0" : "");
-    }
-    $("raw").textContent = JSON.stringify(res.raw, null, 2);
-    $("draft-errors").textContent = res.errors.length ? "ตรวจสอบ: " + res.errors.join("; ") : "";
-    $("extract-status").textContent = res.draft ? "ตรวจข้อมูลแล้วกดบันทึก" : "อ่านได้ไม่ครบ กรอกช่องที่ขาดเองได้";
-    form.hidden = false;
+    for (const k of FIELDS) form[k].value = d[k] ?? (k === "fee" ? "0" : "");
+    form.querySelector(".raw").textContent = JSON.stringify(res.raw, null, 2);
+    form.querySelector(".errors").textContent = res.errors.length ? "ตรวจสอบ: " + res.errors.join("; ") : "";
+    setStatus(form, res.draft ? "พร้อมบันทึก — ตรวจข้อมูลก่อน" : "อ่านได้ไม่ครบ กรอกช่องที่ขาดเอง", res.draft ? null : "failed");
+    form.dataset.ready = res.draft ? "1" : "";
   } catch (e) {
-    $("extract-status").textContent = "ผิดพลาด: " + e.message;
-  } finally {
-    $("extract").disabled = false;
+    setStatus(form, "อ่านไม่ได้: " + e.message, "failed");
   }
-};
+  form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = false));
+}
 
-// save the (possibly edited) draft
-form.onsubmit = async (ev) => {
-  ev.preventDefault();
+async function saveDraft(form) {
+  if (form.classList.contains("saved")) return true;
+  if (!form.reportValidity()) return false;
   const data = Object.fromEntries(new FormData(form));
   for (const k of ["time", "bank", "ref_no", "memo"]) if (!data[k]) data[k] = null;
   try {
     await api("/api/transactions", {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
     });
-    form.hidden = true;
-    $("extract-status").textContent = "บันทึกแล้ว ✓";
+    setStatus(form, "บันทึกแล้ว ✓", "saved");
+    form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = true));
+    form.querySelector(".errors").textContent = "";
     loadRows();
+    return true;
   } catch (e) {
-    $("draft-errors").textContent = "บันทึกไม่ได้: " + e.message;
+    form.querySelector(".errors").textContent = "บันทึกไม่ได้: " + e.message;
+    return false;
   }
+}
+
+function updateBatchActions() {
+  $("batch-actions").hidden = $("drafts").children.length === 0;
+}
+
+$("extract").onclick = async () => {
+  let files = [...$("files").files];
+  if (!files.length) return;
+  if (files.length > MAX_FILES) files = files.slice(0, MAX_FILES);
+  const jobs = files.map((f) => [newDraftCard(f), f]);
+  updateBatchActions();
+  $("extract").disabled = true;
+  $("files").value = "";
+  let done = 0;
+  const status = () => ($("extract-status").textContent =
+    `อ่านแล้ว ${done} / ${jobs.length} รูป` + (files.length === MAX_FILES ? ` (จำกัด ${MAX_FILES} รูปต่อครั้ง)` : ""));
+  status();
+  const queue = [...jobs];
+  const worker = async () => {
+    while (queue.length) {
+      const [form, file] = queue.shift();
+      await extractInto(form, file);
+      done++;
+      status();
+    }
+  };
+  await Promise.all(Array.from({ length: PARALLEL }, worker));
+  $("extract").disabled = false;
+};
+
+// Save every draft that read cleanly; leave the ones needing attention.
+$("save-all").onclick = async () => {
+  const forms = [...$("drafts").querySelectorAll("form.draft:not(.saved)")].filter((f) => f.dataset.ready);
+  let ok = 0;
+  for (const f of forms) ok += (await saveDraft(f)) ? 1 : 0;
+  $("extract-status").textContent = `บันทึก ${ok} / ${forms.length} รายการ` +
+    (ok < forms.length ? " — ที่เหลือดูข้อความในการ์ด" : "");
+};
+
+$("clear-drafts").onclick = () => {
+  $("drafts").replaceChildren();
+  $("extract-status").textContent = "";
+  updateBatchActions();
 };
 
 // 2. ask the agent
