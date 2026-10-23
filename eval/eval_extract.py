@@ -22,6 +22,7 @@ import asyncio
 import json
 import mimetypes
 import re
+from collections import Counter
 from difflib import SequenceMatcher
 from pathlib import Path
 
@@ -95,6 +96,23 @@ async def main(prompts: list[str], limit: int | None) -> None:
     print("\n| prompt | " + " | ".join(cols) + " |\n|---|" + "---|" * len(cols))
     for p, s in summary.items():
         print(f"| {p} | " + " | ".join("-" if s[c] is None else f"{s[c]:.0%}" for c in cols) + " |")
+
+    label, acc = majority_category(gold)
+    if label is not None:
+        print(f"\nmajority-class category baseline: always {label!r} -> category accuracy {acc:.0%}")
+        (RESULTS / "extract_majority.json").write_text(
+            json.dumps({"label": label, "category_accuracy": acc, "n": len(gold)}), encoding="utf-8")
+
+
+def majority_category(gold: list[dict]) -> tuple[str | None, float]:
+    """Baseline B: no model at all — predict the most common category for every slip.
+    A model is only worth asking for the category if it beats this.
+    (The label is taken from the gold set itself, which flatters this baseline slightly.)"""
+    cats = [g["category"] for g in gold if g.get("category")]
+    if not cats:
+        return None, 0.0
+    label, count = Counter(cats).most_common(1)[0]
+    return label, count / len(cats)
 
 
 if __name__ == "__main__":
