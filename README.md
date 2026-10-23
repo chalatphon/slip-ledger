@@ -138,12 +138,16 @@ uv run python -m eval.eval_extract                 # all prompts, model calls
 uv run python -m eval.eval_extract --rescore       # current code on saved model output
 ```
 
-**Before → after the code changes** (same saved model output, `--rescore`):
+**Before → after the code changes** (`baseline`, the same saved model output re-scored
+with `--rescore`, so only the code differs):
 
-| prompt | all_key | direction | ref_no |
+| | all_key | direction | ref_no |
 |---|---|---|---|
-| baseline | 5% → **90%** | 5% → **90%** | 30% → 65% |
-| v2 | 55% → 70% | 55% → 70% | 0% → 10% |
+| before | 5% | 5% | 30% |
+| after | **90%** | **90%** | 65% |
+
+(`v2` scored 55% direction / 0% ref on its first run and 70% / 10% on the next two; its
+first output wasn't kept, so that change mixes the code with run-to-run variance.)
 
 **Current code, all prompts** (v2 and v3 over two fresh runs; v2 identical both times):
 
