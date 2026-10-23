@@ -78,7 +78,8 @@ tests/                      unit + in-process API tests
 question has a `gold_sql`; the expected answer is computed from it, so labels can't
 drift from the data. Metric: answer accuracy (expected value appears in the answer).
 
-- **Baseline:** the whole ledger pasted into the prompt as CSV, no tools.
+- **CSV in prompt:** the whole ledger pasted into the prompt, no tools — the LLM-only baseline.
+- **Rules (no LLM):** `eval/rule_baseline.py` — keyword rules + SQL templates.
 - **Agent:** the SQL agent.
 
 ```bash
@@ -87,22 +88,47 @@ uv run python -m eval.eval_agent
 
 | method | accuracy | correct / n | avg tool calls |
 |---|---|---|---|
-| baseline (CSV in prompt) | 15% | 3 / 20 | 0 |
+| CSV in prompt | 15% | 3 / 20 | 0 |
+| rules (no LLM) | **80%** | 16 / 20 | 0 |
 | SQL agent | 70% | 14 / 20 | 1.3 |
 
-Per-question answers and SQL traces: `eval/results/agent_*.json`.
+Same numbers on two separate runs. Per-question answers and SQL traces:
+`eval/results/agent_*.json`.
 
-Failure modes seen (first run): adding a month filter the question didn't ask for
-(q14, q16); guessing a payee name that doesn't exactly match (q15); using a category
-instead of the payee (q07 "ค่าไฟ" → all `bills`, q20); and one scorer false-negative
-(q12 answered "หมวดอาหาร", the label is `food`).
+**Reading this honestly.** The agent beats asking the model to do arithmetic itself
+(15% → 70%), but on *this* test set hand-written rules beat the agent. Caveat that
+favours the rules: they were written by someone who had already seen these 20
+questions, so they match their phrasing. The rules also fail in ways that don't
+show up as errors:
+
+- q11: "ยา" (medicine) is a substring of "กันยายน" (September), so the rule silently
+  filters to `health` — a wrong number, not "I don't know".
+- q15: the question says "ข้าวมันไก่ป้าศรี" without "ร้าน", so no payee matches and
+  the rule counts *all* food purchases (23 instead of 8).
+- q03: "กี่บาท" isn't one of the "how much" keywords, so no rule fires.
+
+Agent failures (from its SQL traces): adding a month filter the question didn't ask
+for (q14, q16); guessing a payee name that doesn't exactly match (q15); using a
+category instead of the payee (q07 "ค่าไฟ" → all `bills`, q20); and one scorer
+false-negative (q12 answered "หมวดอาหาร", the label is `food`).
+
+Next step: a held-out set of new phrasings written *without* looking at the rules or
+the agent prompt, to test which approach generalizes.
 
 ### 2. Slip extraction (`eval/eval_extract.py`)
 
-Hand-labelled, masked slips in `eval/slips/` (see `eval/slips/README.md`). Compares the
-naive prompt (`baseline`, the reference app's generic "extract key info") with `v2`
-(fixed keys, Thai-slip hints, closed category list). Metrics: JSON parse rate, schema
-validity, per-field accuracy, and `all_key` (date + amount + direction all correct).
+Hand-labelled, masked slips in `eval/slips/` (see `eval/slips/README.md`). Compares
+three prompts, each adding one thing:
+
+| prompt | what it adds |
+|---|---|
+| `baseline` | the reference app's generic "extract key info"; the model picks its own keys |
+| `fixed_keys` | + a fixed key set and the category list (no Thai-slip hints) |
+| `v2` | + Thai-slip hints: where payer/payee/ref are, copy dates as printed, null if absent |
+
+plus a **majority-class** category baseline (always predict the most common category,
+no model). Metrics: JSON parse rate, schema validity, per-field accuracy, and
+`all_key` (date + amount + direction all correct).
 
 ```bash
 uv run python -m eval.eval_extract

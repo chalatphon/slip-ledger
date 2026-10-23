@@ -14,7 +14,7 @@
       "correct": true,
       "steps": [
         {
-          "action": "SELECT SUM(amount) FROM transactions WHERE category = 'food' AND strftime('%Y-%m', date) = '2026-10'",
+          "action": "SELECT SUM(amount) FROM transactions WHERE category = 'food' AND strftime('%Y-%m', date) = '2026-10' AND direction = 'expense'",
           "observation": "SUM(amount)\n1314.0"
         }
       ]
