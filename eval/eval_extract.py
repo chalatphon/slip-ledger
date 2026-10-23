@@ -1,4 +1,6 @@
-"""Evaluate slip extraction against a hand-labelled gold set: prompt "baseline" vs "v2".
+"""Evaluate slip extraction against a hand-labelled gold set: prompts "baseline",
+"fixed_keys" and "v2" (see app/services/extractor.py), plus a majority-class
+category baseline.
 
 Gold set: eval/slips/labels.jsonl — one line per (masked) image in eval/slips/:
   {"file": "bbl_001.jpg", "date": "2026-10-18", "time": "16:22", "amount": 59.0,
@@ -97,7 +99,7 @@ async def main(prompts: list[str], limit: int | None) -> None:
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("--prompts", nargs="+", default=["baseline", "v2"], choices=list(extractor.PROMPTS))
+    p.add_argument("--prompts", nargs="+", default=list(extractor.PROMPTS), choices=list(extractor.PROMPTS))
     p.add_argument("--limit", type=int)
     a = p.parse_args()
     asyncio.run(main(a.prompts, a.limit))

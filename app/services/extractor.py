@@ -4,9 +4,12 @@ Two steps, kept apart on purpose so each can be evaluated:
   1. `read_image`  — the model transcribes the image into JSON (parse + one repair).
   2. `to_draft`    — code normalizes and validates that JSON into a `Transaction`.
 
-Two prompt versions exist so the eval can compare them (eval/eval_extract.py):
-  - "baseline": the naive default (the reference app's generic "extract key info").
-  - "v2":       a fixed key set, Thai-slip hints, and a closed category list.
+Three prompt versions exist so the eval can compare them (eval/eval_extract.py):
+  - "baseline":   the naive default (the reference app's generic "extract key info").
+  - "fixed_keys": the same generic instruction, but with v2's key set and category
+                  list — no Thai-slip hints. baseline -> fixed_keys measures what fixed
+                  keys buy; fixed_keys -> v2 measures what the hints buy (an ablation).
+  - "v2":         fixed keys + Thai-slip hints + a closed category list.
 """
 from decimal import Decimal
 
@@ -20,6 +23,12 @@ PROMPTS = {
         "Read this document image and extract its key information as a FLAT JSON object "
         "of string fields (for example date, amount, sender, receiver). Use snake_case "
         "keys. Return ONLY the JSON object, no prose, no code fences."
+    ),
+    "fixed_keys": (
+        "Read this document image and extract its key information as a FLAT JSON object "
+        "with exactly these keys: date, time, amount, fee, sender_name, sender_bank, "
+        "receiver_name, receiver_bank, ref_no, memo, category. category is one of: "
+        f"{', '.join(CATEGORIES)}. Return ONLY the JSON object, no prose, no code fences."
     ),
     "v2": (
         "This image is a Thai bank transfer slip or a shop receipt. Copy what is printed "
