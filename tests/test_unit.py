@@ -161,3 +161,11 @@ def test_ref_no_left_alone_when_nothing_matches():
     raw = {**SLIP, "ref_no": "ABC123"}  # another bank's format: can't check, keep it
     res = to_draft(raw, [], [])
     assert res.draft.ref_no == "ABC123" and res.errors == []
+
+
+def test_owner_on_payee_side_without_payer_is_unknown_not_invalid():
+    # Seen on real slips: the model put the owner's account under the payee and read no payer.
+    raw = {**SLIP, "sender_name": None, "receiver_name": "นาย ชลวัช", "receiver_account": "226-0-xxx569"}
+    res = to_draft(raw, [], ["569"])
+    assert res.draft is not None and res.draft.direction == "unknown"
+    assert any("payee side" in e for e in res.errors)

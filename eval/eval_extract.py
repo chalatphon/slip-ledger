@@ -16,6 +16,7 @@ Metrics (per prompt)
 
 Run:  uv run python -m eval.eval_extract
       uv run python -m eval.eval_extract --prompts v2 --limit 5
+      uv run python -m eval.eval_extract --rescore     # code change only, same model output
       uv run python -m eval.eval_extract --slips-dir private   # unmasked originals;
           # per-slip results (which contain names) then go to private/results, not Git
 """
@@ -56,7 +57,8 @@ def field_correct(field: str, got, gold) -> bool:
     return str(got) == str(gold)
 
 
-async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS) -> None:
+async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS,
+               rescore: bool = False) -> None:
     labels = slips_dir / "labels.jsonl"
     results = RESULTS if slips_dir.resolve() == SLIPS.resolve() else slips_dir / "results"
     if not labels.exists():
@@ -71,10 +73,16 @@ async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS) -
 
     for prompt in prompts:
         rows = []
+        # --rescore: reuse the model's saved output and re-run only the code (to_draft),
+        # so a code change is measured on its own — no model calls, no run-to-run noise.
+        saved = {}
+        if rescore:
+            saved = {r["file"]: r["raw"] for r in json.loads(
+                (results / f"extract_{prompt}.json").read_text(encoding="utf-8"))["rows"]}
         for g in gold:
             path = slips_dir / g["file"]
             mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
-            raw = await extractor.read_image(path.read_bytes(), mime, prompt)
+            raw = saved[g["file"]] if rescore else await extractor.read_image(path.read_bytes(), mime, prompt)
             res = extractor.to_draft(raw, owners, config.OWNER_ACCOUNTS)
             draft = res.draft.model_dump(mode="json") if res.draft else {}
             scores = {f: field_correct(f, draft.get(f), g[f]) for f in FIELDS if g.get(f) is not None}
@@ -125,5 +133,7 @@ if __name__ == "__main__":
     p.add_argument("--limit", type=int)
     p.add_argument("--slips-dir", type=Path, default=SLIPS,
                    help="folder with the images + labels.jsonl (default: eval/slips)")
+    p.add_argument("--rescore", action="store_true",
+                   help="re-score the saved model output with the current code (no model calls)")
     a = p.parse_args()
-    asyncio.run(main(a.prompts, a.limit, a.slips_dir))
+    asyncio.run(main(a.prompts, a.limit, a.slips_dir, a.rescore))

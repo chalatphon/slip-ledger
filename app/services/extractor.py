@@ -149,14 +149,19 @@ def to_draft(raw: dict, owners: list[str] | None = None, accounts: list[str] | N
     receiver = normalize.clean_text(_pick(raw, "receiver_name"))
     # Direction is decided by code, not the model: is the owner the payer or the payee?
     sender_acct, receiver_acct = _pick(raw, "sender_account"), _pick(raw, "receiver_account")
+    owner_receives = _is_owner(receiver, receiver_acct, owners, accounts)
     if _is_owner(sender, sender_acct, owners, accounts):
         direction, counterparty, bank = "expense", receiver, _pick(raw, "receiver_bank")
-    elif _is_owner(receiver, receiver_acct, owners, accounts):
+    elif owner_receives and (sender or sender_acct):
         direction, counterparty, bank = "income", sender, _pick(raw, "sender_bank")
-    elif sender is None and receiver:  # a shop receipt: no payer printed -> spending
+    elif sender is None and receiver and not owner_receives:  # a shop receipt -> spending
         direction, counterparty, bank = "expense", receiver, None
     else:
+        # Includes: the owner read on the payee side with no payer at all — the model
+        # has likely put the payer block in the wrong field. Don't guess; let the user say.
         direction, counterparty, bank = "unknown", receiver or sender, _pick(raw, "receiver_bank")
+        if owner_receives:
+            errors.append("owner found on the payee side but no payer was read - check direction")
 
     category = str(_pick(raw, "category") or "other").strip().lower()
     if category not in CATEGORIES:
