@@ -16,6 +16,8 @@ Metrics (per prompt)
 
 Run:  uv run python -m eval.eval_extract
       uv run python -m eval.eval_extract --prompts v2 --limit 5
+      uv run python -m eval.eval_extract --slips-dir private   # unmasked originals;
+          # per-slip results (which contain names) then go to private/results, not Git
 """
 import argparse
 import asyncio
@@ -54,21 +56,23 @@ def field_correct(field: str, got, gold) -> bool:
     return str(got) == str(gold)
 
 
-async def main(prompts: list[str], limit: int | None) -> None:
-    if not LABELS.exists():
-        raise SystemExit(f"No gold set yet: add masked slips to {SLIPS} and label them in {LABELS.name} "
+async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS) -> None:
+    labels = slips_dir / "labels.jsonl"
+    results = RESULTS if slips_dir.resolve() == SLIPS.resolve() else slips_dir / "results"
+    if not labels.exists():
+        raise SystemExit(f"No gold set yet: add masked slips to {slips_dir} and label them in {labels.name} "
                          "(see eval/slips/README.md).")
-    gold = [json.loads(l) for l in LABELS.read_text(encoding="utf-8").splitlines() if l.strip()]
+    gold = [json.loads(l) for l in labels.read_text(encoding="utf-8").splitlines() if l.strip()]
     gold = gold[:limit] if limit else gold
     # Masked slips can show the placeholder OWNER instead of your name.
     owners = config.OWNER_NAMES + ["OWNER"]
-    RESULTS.mkdir(exist_ok=True)
+    results.mkdir(exist_ok=True)
     summary = {}
 
     for prompt in prompts:
         rows = []
         for g in gold:
-            path = SLIPS / g["file"]
+            path = slips_dir / g["file"]
             mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
             raw = await extractor.read_image(path.read_bytes(), mime, prompt)
             res = extractor.to_draft(raw, owners)
@@ -88,7 +92,7 @@ async def main(prompts: list[str], limit: int | None) -> None:
             scored = [r["scores"][f] for r in rows if f in r["scores"]]
             s[f] = sum(scored) / len(scored) if scored else None
         summary[prompt] = s
-        (RESULTS / f"extract_{prompt}.json").write_text(
+        (results / f"extract_{prompt}.json").write_text(
             json.dumps({"summary": s, "rows": rows}, ensure_ascii=False, indent=2, default=str),
             encoding="utf-8")
 
@@ -100,7 +104,7 @@ async def main(prompts: list[str], limit: int | None) -> None:
     label, acc = majority_category(gold)
     if label is not None:
         print(f"\nmajority-class category baseline: always {label!r} -> category accuracy {acc:.0%}")
-        (RESULTS / "extract_majority.json").write_text(
+        (results / "extract_majority.json").write_text(
             json.dumps({"label": label, "category_accuracy": acc, "n": len(gold)}), encoding="utf-8")
 
 
@@ -119,5 +123,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--prompts", nargs="+", default=list(extractor.PROMPTS), choices=list(extractor.PROMPTS))
     p.add_argument("--limit", type=int)
+    p.add_argument("--slips-dir", type=Path, default=SLIPS,
+                   help="folder with the images + labels.jsonl (default: eval/slips)")
     a = p.parse_args()
-    asyncio.run(main(a.prompts, a.limit))
+    asyncio.run(main(a.prompts, a.limit, a.slips_dir))
