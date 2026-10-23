@@ -1,4 +1,4 @@
-"""Evaluate question answering over the ledger: SQL agent vs a no-tool baseline.
+"""Evaluate question answering over the ledger: SQL agent vs two baselines.
 
 Test set: eval/data/agent_questions.jsonl — each question has a `gold_sql`; the
 expected answer is computed by running that SQL on the fixed seed ledger, so the
@@ -7,12 +7,13 @@ labels can't drift from the data.
 Methods
   baseline  "stuff the table into the prompt": the whole ledger as CSV + the question,
             one call, no tools. The model must filter and add up numbers itself.
+  rules     eval/rule_baseline.py — no LLM at all: keyword rules + SQL templates.
   agent     app/agent/loop.py — the model writes SQL, the database does the maths.
 
 Metric: answer accuracy — correct if the expected value appears in the answer
 (numbers compared to 0.01 after removing thousands separators).
 
-Run:  uv run python -m eval.eval_agent              # both methods
+Run:  uv run python -m eval.eval_agent              # all methods
       uv run python -m eval.eval_agent --methods agent --limit 5
 """
 import argparse
@@ -26,7 +27,7 @@ from pathlib import Path
 
 from app import llm
 from app.agent import loop
-from eval import seed
+from eval import rule_baseline, seed
 
 HERE = Path(__file__).parent
 QUESTIONS = HERE / "data" / "agent_questions.jsonl"
@@ -78,6 +79,9 @@ async def main(methods: list[str], limit: int | None) -> None:
                     res = await loop.run(q["question"], db_path=db_path, today=TODAY)
                     answer, n_steps = res.answer, len(res.steps)
                     trace = [s.model_dump() for s in res.steps]
+                elif method == "rules":
+                    answer, query = rule_baseline.answer(q["question"], db_path, TODAY)
+                    n_steps, trace = 0, [{"action": query, "observation": answer}] if query else []
                 else:
                     answer, n_steps, trace = await baseline(q["question"], csv_text), 0, []
                 ok = is_correct(answer, exp)
@@ -100,7 +104,8 @@ async def main(methods: list[str], limit: int | None) -> None:
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("--methods", nargs="+", default=["baseline", "agent"], choices=["baseline", "agent"])
+    p.add_argument("--methods", nargs="+", default=["baseline", "rules", "agent"],
+                   choices=["baseline", "rules", "agent"])
     p.add_argument("--limit", type=int)
     a = p.parse_args()
     asyncio.run(main(a.methods, a.limit))

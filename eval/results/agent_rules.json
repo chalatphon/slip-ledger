@@ -1,0 +1,265 @@
+{
+  "summary": {
+    "accuracy": 0.8,
+    "correct": 16,
+    "n": 20,
+    "avg_tool_calls": 0.0
+  },
+  "rows": [
+    {
+      "id": "q01",
+      "question": "เดือนตุลาคมใช้เงินค่ากินไปเท่าไหร่",
+      "expected": 1314.0,
+      "answer": "1314.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-10' AND category = 'food' AND direction = 'expense'",
+          "observation": "1314.0"
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "question": "How much did I spend on transport in September?",
+      "expected": 609.0,
+      "answer": "609.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-09' AND category = 'transport' AND direction = 'expense'",
+          "observation": "609.0"
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "question": "เดือนนี้ใช้เงินไปทั้งหมดกี่บาท",
+      "expected": 4100.0,
+      "answer": "ขอโทษ ไม่เข้าใจคำถาม (no rule matched)",
+      "correct": false,
+      "steps": []
+    },
+    {
+      "id": "q04",
+      "question": "เดือนที่แล้วมีรายรับรวมเท่าไหร่",
+      "expected": 9000.0,
+      "answer": "9000.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-09' AND direction = 'income'",
+          "observation": "9000.0"
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "question": "ซื้อของ Shopee ไปกี่ครั้งตั้งแต่เดือนสิงหาคม",
+      "expected": 6,
+      "answer": "6",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT COUNT(*) FROM transactions WHERE date >= '2026-08-01' AND counterparty = 'Shopee'",
+          "observation": "6"
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "question": "What is my biggest single expense in August?",
+      "expected": 836.0,
+      "answer": "836.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT MAX(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-08' AND direction = 'expense'",
+          "observation": "836.0"
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "question": "ค่าไฟเดือนกันยายนเท่าไหร่",
+      "expected": 783.0,
+      "answer": "1182.0",
+      "correct": false,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-09' AND category = 'bills' AND direction = 'expense'",
+          "observation": "1182.0"
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "question": "ไป Cafe Amazon ไปกี่ครั้งในเดือนตุลาคม",
+      "expected": 5,
+      "answer": "5",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT COUNT(*) FROM transactions WHERE strftime('%Y-%m', date) = '2026-10' AND counterparty = 'Cafe Amazon'",
+          "observation": "5"
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "question": "รวม 3 เดือนใช้เงินค่าเดินทางไปเท่าไหร่",
+      "expected": 1776.0,
+      "answer": "1776.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE category = 'transport' AND direction = 'expense'",
+          "observation": "1776.0"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "question": "How much did I spend in total in August?",
+      "expected": 4574.0,
+      "answer": "4574.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-08' AND direction = 'expense'",
+          "observation": "4574.0"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "question": "เดือนกันยายนเหลือเงินสุทธิ (รายรับลบรายจ่าย) เท่าไหร่",
+      "expected": 4797.0,
+      "answer": "-336.0",
+      "correct": false,
+      "steps": [
+        {
+          "action": "SELECT SUM(CASE WHEN direction = 'income' THEN amount ELSE -amount END) FROM transactions WHERE strftime('%Y-%m', date) = '2026-09' AND category = 'health'",
+          "observation": "-336.0"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "question": "หมวดไหนใช้เงินมากที่สุดในเดือนตุลาคม",
+      "expected": "food",
+      "answer": "food",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT category FROM transactions WHERE strftime('%Y-%m', date) = '2026-10' AND direction = 'expense' GROUP BY category ORDER BY SUM(amount) DESC LIMIT 1",
+          "observation": "food"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "question": "What was the average amount per food purchase in September?",
+      "expected": 57.61,
+      "answer": "57.61",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT ROUND(AVG(amount), 2) FROM transactions WHERE strftime('%Y-%m', date) = '2026-09' AND category = 'food' AND direction = 'expense'",
+          "observation": "57.61"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "question": "ใช้เงินค่าหนังไปเท่าไหร่ทั้งหมด",
+      "expected": 648.0,
+      "answer": "648.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE category = 'entertainment' AND direction = 'expense'",
+          "observation": "648.0"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "question": "กินข้าวมันไก่ป้าศรีไปกี่ครั้งในเดือนสิงหาคม",
+      "expected": 8,
+      "answer": "23",
+      "correct": false,
+      "steps": [
+        {
+          "action": "SELECT COUNT(*) FROM transactions WHERE strftime('%Y-%m', date) = '2026-08' AND category = 'food'",
+          "observation": "23"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "question": "ได้เงินจากแม่รวมทั้งหมดเท่าไหร่",
+      "expected": 18000.0,
+      "answer": "18000.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE counterparty = 'แม่' AND direction = 'income'",
+          "observation": "18000.0"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "question": "How many transactions did I make on Grab in total?",
+      "expected": 6,
+      "answer": "6",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT COUNT(*) FROM transactions WHERE counterparty = 'Grab'",
+          "observation": "6"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "question": "ค่ายาเดือนสิงหาคมเท่าไหร่",
+      "expected": 122.0,
+      "answer": "122.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-08' AND category = 'health' AND direction = 'expense'",
+          "observation": "122.0"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "question": "เดือนไหนใช้ค่าอาหารมากที่สุด ตอบเป็นเลขเดือน YYYY-MM",
+      "expected": "2026-09",
+      "answer": "2026-09",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT strftime('%Y-%m', date) AS m FROM transactions WHERE category = 'food' AND direction = 'expense' GROUP BY m ORDER BY SUM(amount) DESC LIMIT 1",
+          "observation": "2026-09"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "question": "เดือนตุลาคมจ่ายค่าโรงอาหาร สจล. ไปเท่าไหร่",
+      "expected": 504.0,
+      "answer": "504.0",
+      "correct": true,
+      "steps": [
+        {
+          "action": "SELECT SUM(amount) FROM transactions WHERE strftime('%Y-%m', date) = '2026-10' AND counterparty = 'โรงอาหาร สจล.'",
+          "observation": "504.0"
+        }
+      ]
+    }
+  ]
+}

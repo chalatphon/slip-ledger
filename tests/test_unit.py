@@ -117,3 +117,26 @@ def test_eval_scoring():
     assert is_correct("The top category is food.", "food")
     assert field_correct("counterparty", "นาย ชลัฐพล", "ชลัฐพล")
     assert field_correct("amount", 59.0, 59)
+
+
+def test_rule_baseline_builds_sql():
+    from eval.rule_baseline import build_sql
+    today = date(2026, 10, 20)
+    sql = build_sql("เดือนนี้ใช้ค่ากินไปเท่าไหร่", ["Grab"], today)
+    assert "category = 'food'" in sql and "'2026-10'" in sql and sql.startswith("SELECT SUM")
+    assert "COUNT(*)" in build_sql("How many Grab rides?", ["Grab"], today)
+    assert "counterparty = 'Grab'" in build_sql("How many Grab rides?", ["Grab"], today)
+    assert build_sql("สวัสดี", [], today) is None  # no rule -> gives up
+
+
+def test_rule_baseline_known_weakness_thai_substring():
+    # Documented failure: "ยา" (medicine) is inside "กันยายน" (September).
+    from eval.rule_baseline import build_sql
+    sql = build_sql("เดือนกันยายนใช้ไปเท่าไหร่", [], date(2026, 10, 20))
+    assert "category = 'health'" in sql
+
+
+def test_majority_category():
+    from eval.eval_extract import majority_category
+    assert majority_category([{"category": "food"}, {"category": "food"}, {"category": "bills"}]) == ("food", 2 / 3)
+    assert majority_category([{}]) == (None, 0.0)
