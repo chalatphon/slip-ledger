@@ -32,7 +32,10 @@ class DuplicateError(Exception):
 
 def connect(path: str) -> sqlite3.Connection:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    db = sqlite3.connect(path)
+    # FastAPI may open the connection (in the get_db dependency) on one worker thread
+    # and run the endpoint on another. Each request gets its own connection and uses
+    # it from one request at a time, so turning off sqlite's same-thread check is safe.
+    db = sqlite3.connect(path, check_same_thread=False)
     db.row_factory = sqlite3.Row
     db.execute(SCHEMA)
     return db
