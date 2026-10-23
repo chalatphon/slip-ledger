@@ -117,24 +117,64 @@ the agent prompt, to test which approach generalizes.
 
 ### 2. Slip extraction (`eval/eval_extract.py`)
 
-Hand-labelled, masked slips in `eval/slips/` (see `eval/slips/README.md`). Compares
-three prompts, each adding one thing:
+20 real Bangkok Bank slips (4–22 Oct 2026), hand-labelled (`labels.jsonl`). Compares
+four prompts, each adding one thing:
 
 | prompt | what it adds |
 |---|---|
 | `baseline` | the reference app's generic "extract key info"; the model picks its own keys |
 | `fixed_keys` | + a fixed key set and the category list (no Thai-slip hints) |
 | `v2` | + Thai-slip hints: where payer/payee/ref are, copy dates as printed, null if absent |
+| `v3` | + payer/payee account numbers, a ref_no hint naming the footer number |
 
-plus a **majority-class** category baseline (always predict the most common category,
-no model). Metrics: JSON parse rate, schema validity, per-field accuracy, and
-`all_key` (date + amount + direction all correct).
+plus a **majority-class** category baseline (always "food", no model). Metrics: schema
+validity, per-field accuracy, and `all_key` (date + amount + direction all correct).
+Two code changes apply to every prompt: the owner is matched by account suffix
+(`OWNER_ACCOUNTS`) before name, and a `ref_no` that doesn't start with the slip's
+`YYYYMMDDHHMM` is swapped for a value the model read that does.
 
 ```bash
-uv run python -m eval.eval_extract
+uv run python -m eval.eval_extract                 # all prompts, model calls
+uv run python -m eval.eval_extract --rescore       # current code on saved model output
 ```
 
-*Results: TODO once the gold set is labelled.*
+**Before → after the code changes** (same saved model output, `--rescore`):
+
+| prompt | all_key | direction | ref_no |
+|---|---|---|---|
+| baseline | 5% → **90%** | 5% → **90%** | 30% → 65% |
+| v2 | 55% → 70% | 55% → 70% | 0% → 10% |
+
+**Current code, all prompts** (v2 and v3 over two fresh runs; v2 identical both times):
+
+| prompt | valid | all_key | date | time | amount | direction | counterparty | ref_no | category |
+|---|---|---|---|---|---|---|---|---|---|
+| baseline | 90% | **90%** | 90% | 60% | 90% | **90%** | 35% | 65% | 6% |
+| fixed_keys | 80% | 0% | 80% | 80% | 80% | 0% | 45% | 0% | 44% |
+| v2 | 100% | 70% | 100% | 100% | 100% | 70% | 45% | 10% | 69% |
+| v3 | 100% | 70–80% | 100% | 100% | 100% | 70–80% | 45% | **70–75%** | 62–69% |
+
+Majority class ("food" every time): category 38%.
+
+**Reading this honestly.**
+
+- The biggest gain came from *code*, not prompts: matching the owner by account number
+  (the model misread the owner's Thai name on every slip) and checking the ref number
+  against the slip's own timestamp.
+- That gain is largest for the generic `baseline` prompt, because it writes out every
+  number it sees (payer account, both ref numbers), so the code has something to
+  check. `v2`/`v3` often return the payer as `null`; their "expense" is then a guess
+  (no payer → treated as a shop receipt), right on these slips only because all 20
+  are payments.
+- `v3` is the only prompt that gets date, time and amount on every slip *and* most ref
+  numbers, and it is the default in the app. `baseline` wins on direction.
+- The test set was also the development set: v3 and the code checks were written
+  after looking at these slips. A held-out set (other banks, incoming transfers) is
+  needed before trusting any of these numbers beyond this bank's layout.
+- Results vary between runs at temperature 0 (v3 moved 5–10 points between two runs).
+
+The slips contain other people's names, so the images are kept out of Git for now
+(see Privacy).
 
 ## Privacy
 
