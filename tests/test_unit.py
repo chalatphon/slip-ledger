@@ -140,3 +140,24 @@ def test_majority_category():
     from eval.eval_extract import majority_category
     assert majority_category([{"category": "food"}, {"category": "food"}, {"category": "bills"}]) == ("food", 2 / 3)
     assert majority_category([{}]) == (None, 0.0)
+
+
+def test_owner_found_by_account_when_name_is_misread():
+    raw = {**SLIP, "sender_name": "นาย ชลวัช", "sender_account": "226-0-xxx569"}
+    assert to_draft(raw, ["ชลัฐพล"], ["569"]).draft.direction == "expense"
+    assert to_draft(raw, ["ชลัฐพล"], []).draft.direction == "unknown"  # name alone fails
+    incoming = {**SLIP, "sender_name": "x", "receiver_name": "y", "receiver_account": "226-0-xxx569"}
+    assert to_draft(incoming, [], ["569"]).draft.direction == "income"
+
+
+def test_ref_no_swapped_for_value_matching_slip_timestamp():
+    raw = {**SLIP, "ref_no": "000002206271835", "memo": "2026101816220924003073908"}
+    res = to_draft(raw, [], [])
+    assert res.draft.ref_no == "2026101816220924003073908"
+    assert any("does not match" in e for e in res.errors)
+
+
+def test_ref_no_left_alone_when_nothing_matches():
+    raw = {**SLIP, "ref_no": "ABC123"}  # another bank's format: can't check, keep it
+    res = to_draft(raw, [], [])
+    assert res.draft.ref_no == "ABC123" and res.errors == []

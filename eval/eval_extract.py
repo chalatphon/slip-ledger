@@ -75,7 +75,7 @@ async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS) -
             path = slips_dir / g["file"]
             mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
             raw = await extractor.read_image(path.read_bytes(), mime, prompt)
-            res = extractor.to_draft(raw, owners)
+            res = extractor.to_draft(raw, owners, config.OWNER_ACCOUNTS)
             draft = res.draft.model_dump(mode="json") if res.draft else {}
             scores = {f: field_correct(f, draft.get(f), g[f]) for f in FIELDS if g.get(f) is not None}
             rows.append({"file": g["file"], "json_ok": "_error" not in raw, "valid": res.draft is not None,
