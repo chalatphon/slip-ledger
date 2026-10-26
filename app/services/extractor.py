@@ -136,7 +136,8 @@ def _check_ref(ref: str | None, raw: dict, date, time: str | None) -> tuple[str 
     return ref, None
 
 
-def to_draft(raw: dict, owners: list[str] | None = None, accounts: list[str] | None = None) -> ExtractResult:
+def to_draft(raw: dict, owners: list[str] | None = None, accounts: list[str] | None = None,
+             check_ref: bool = True) -> ExtractResult:
     """Normalize the model's JSON and validate it as a Transaction. Never raises:
     problems come back as `errors` so the UI can ask the user to fix them."""
     owners = config.OWNER_NAMES if owners is None else owners
@@ -169,7 +170,9 @@ def to_draft(raw: dict, owners: list[str] | None = None, accounts: list[str] | N
         category = "other"
 
     date, time = normalize.parse_date(_pick(raw, "date")), normalize.parse_time(_pick(raw, "time"))
-    ref_no, note = _check_ref(normalize.clean_text(_pick(raw, "ref_no")), raw, date, time)
+    ref_no, note = normalize.clean_text(_pick(raw, "ref_no")), None
+    if check_ref:
+        ref_no, note = _check_ref(ref_no, raw, date, time)
     if note:
         errors.append(note)
 

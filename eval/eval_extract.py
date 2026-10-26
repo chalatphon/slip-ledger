@@ -17,6 +17,7 @@ Metrics (per prompt)
 Run:  uv run python -m eval.eval_extract
       uv run python -m eval.eval_extract --prompts v2 --limit 5
       uv run python -m eval.eval_extract --rescore     # code change only, same model output
+      uv run python -m eval.eval_extract --rescore --no-checks   # same output, naive code
       uv run python -m eval.eval_extract --slips-dir private   # unmasked originals;
           # per-slip results (which contain names) then go to private/results, not Git
 """
@@ -58,7 +59,7 @@ def field_correct(field: str, got, gold) -> bool:
 
 
 async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS,
-               rescore: bool = False) -> None:
+               rescore: bool = False, no_checks: bool = False) -> None:
     labels = slips_dir / "labels.jsonl"
     results = RESULTS if slips_dir.resolve() == SLIPS.resolve() else slips_dir / "results"
     if not labels.exists():
@@ -66,8 +67,14 @@ async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS,
                          "(see eval/slips/README.md).")
     gold = [json.loads(l) for l in labels.read_text(encoding="utf-8").splitlines() if l.strip()]
     gold = gold[:limit] if limit else gold
-    # Masked slips can show the placeholder OWNER instead of your name.
-    owners = config.OWNER_NAMES + ["OWNER"]
+    # Who "you" are on these slips. The public set ships its own owner.json (fictitious
+    # name + account suffix) so the eval runs from the repo alone; otherwise use .env.
+    owner_file = slips_dir / "owner.json"
+    if owner_file.exists():
+        owner = json.loads(owner_file.read_text(encoding="utf-8"))
+        owners, accounts = owner.get("names", []), owner.get("accounts", [])
+    else:
+        owners, accounts = config.OWNER_NAMES + ["OWNER"], config.OWNER_ACCOUNTS
     results.mkdir(exist_ok=True)
     summary = {}
 
@@ -83,7 +90,10 @@ async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS,
             path = slips_dir / g["file"]
             mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
             raw = saved[g["file"]] if rescore else await extractor.read_image(path.read_bytes(), mime, prompt)
-            res = extractor.to_draft(raw, owners, config.OWNER_ACCOUNTS)
+            # --no-checks: the naive code (owner by name only, ref_no taken as given), so
+            # the gain from the two code checks can be measured on the same model output.
+            res = (extractor.to_draft(raw, owners, [], check_ref=False) if no_checks
+                   else extractor.to_draft(raw, owners, accounts))
             draft = res.draft.model_dump(mode="json") if res.draft else {}
             scores = {f: field_correct(f, draft.get(f), g[f]) for f in FIELDS if g.get(f) is not None}
             rows.append({"file": g["file"], "json_ok": "_error" not in raw, "valid": res.draft is not None,
@@ -100,7 +110,8 @@ async def main(prompts: list[str], limit: int | None, slips_dir: Path = SLIPS,
             scored = [r["scores"][f] for r in rows if f in r["scores"]]
             s[f] = sum(scored) / len(scored) if scored else None
         summary[prompt] = s
-        (results / f"extract_{prompt}.json").write_text(
+        out = results / f"extract_{prompt}{'_nochecks' if no_checks else ''}.json"
+        out.write_text(
             json.dumps({"summary": s, "rows": rows}, ensure_ascii=False, indent=2, default=str),
             encoding="utf-8")
 
@@ -135,5 +146,7 @@ if __name__ == "__main__":
                    help="folder with the images + labels.jsonl (default: eval/slips)")
     p.add_argument("--rescore", action="store_true",
                    help="re-score the saved model output with the current code (no model calls)")
+    p.add_argument("--no-checks", action="store_true",
+                   help="score without the account-number and ref_no checks (use with --rescore)")
     a = p.parse_args()
-    asyncio.run(main(a.prompts, a.limit, a.slips_dir, a.rescore))
+    asyncio.run(main(a.prompts, a.limit, a.slips_dir, a.rescore, a.no_checks))

@@ -1,26 +1,31 @@
-# Slip gold set
+# Slip test set (anonymized)
 
-The extraction eval (`eval/eval_extract.py`) reads the images in this folder and the
-hand-written answers in `labels.jsonl`.
+20 real Bangkok Bank transfer slips (4–22 Oct 2026) with **the people replaced by
+fictitious ones**, so the extraction eval can be re-run from this repo:
 
-## Adding a slip (aim for ~30, from several banks + some shop receipts)
-
-1. Put the **original** image in `private/` at the repo root (gitignored — never committed).
-2. Make a **masked copy** here: cover your full name, account number and QR code
-   (any image editor; a solid box is enough). Keep the amount, date, time, payee and
-   reference number visible — those are what we score. If a reference number is
-   sensitive, replace it with a fake one *in the image and the label*.
-3. Name it `<bank>_<nnn>.<ext>`, e.g. `bbl_001.jpg`, `kbank_004.png`, `receipt_002.jpg`.
-4. Add one line to `labels.jsonl` with what is really on the slip:
-
-```json
-{"file": "bbl_001.jpg", "date": "2026-10-18", "time": "16:22", "amount": 59.0, "fee": 0.0, "direction": "expense", "counterparty": "บริษัท ไมเนอร์ ดีคิว จำกัด", "ref_no": "2026101816220924003073908", "category": "food"}
+```bash
+uv run python -m eval.eval_extract
 ```
 
-- `date` in ISO (`YYYY-MM-DD`, C.E.) — the app converts B.E. itself.
-- `direction` is from **your** point of view. The eval treats both `OWNER_NAMES` (from
-  `.env`) and the word `OWNER` as you — so either leave your first name visible, or
-  write `OWNER` over your masked name so the model can still tell payer from payee.
-- Leave a field out if it isn't on the image; it then isn't scored.
+## What was changed, and what was not
 
-Then run `uv run python -m eval.eval_extract`.
+Every image carries a red **"TEST DATA · ข้อมูลทดสอบ (นามสมมติ)"** strip along the top
+(one along the bottom, next to the reference number, made the model skip that number). `make_mock.py` built these images from the originals, which stay out of Git.
+
+| On the slip | In this set |
+|---|---|
+| Owner's name (under "จาก") | fictitious: **นาย สมชาย ทดสอบ** |
+| Payees who are private people (slips 5, 7, 8, 16, 19, 20) | fictitious names |
+| Their phone, PromptPay ID and e-wallet numbers | fictitious numbers |
+| QR code (encodes the real transaction) | replaced by a QR that encodes only "TEST DATA" |
+| Shop names, amounts, dates, times, fees, reference numbers | **unchanged**: these are what the eval scores, and they identify no private person |
+| Owner's masked account number (226-0-xxx569) | unchanged, as the bank prints it |
+
+`labels.jsonl` holds the answers (dates in C.E., direction from the owner's point of
+view; payee names are the fictitious ones). `owner.json` tells the eval who the owner is
+on these slips (name `สมชาย`, account ending `569`), so it needs no `.env`.
+
+## Adding slips
+
+Put originals in `private/` (gitignored), add their lines to `PEOPLE` in `make_mock.py`
+if a payee is a private person, run it, then add the answers to `labels.jsonl`.

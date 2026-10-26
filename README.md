@@ -118,71 +118,61 @@ the agent prompt, to test which approach generalizes.
 
 ### 2. Slip extraction (`eval/eval_extract.py`)
 
-20 real Bangkok Bank slips (4–22 Oct 2026), hand-labelled (`labels.jsonl`). Compares
-four prompts, each adding one thing:
+**Test set:** 20 real Bangkok Bank slips (4–22 Oct 2026) in `eval/slips/`, with the
+people replaced by fictitious ones (names, phone/ID numbers, QR) — see
+`eval/slips/README.md`. Amounts, dates, shop names and reference numbers are real.
+Answers in `eval/slips/labels.jsonl`, all 8 fields on every slip.
+
+Four prompts, each adding one thing:
 
 | prompt | what it adds |
 |---|---|
 | `baseline` | the reference app's generic "extract key info"; the model picks its own keys |
 | `fixed_keys` | + a fixed key set and the category list (no Thai-slip hints) |
 | `v2` | + Thai-slip hints: where payer/payee/ref are, copy dates as printed, null if absent |
-| `v3` | + payer/payee account numbers, a ref_no hint naming the footer number |
+| `v3` (used by the app) | + payer/payee account numbers, a ref_no hint naming the footer number |
 
-plus a **majority-class** category baseline (always "food", no model). Metrics: schema
-validity, per-field accuracy, and `all_key` (date + amount + direction all correct).
-Two code changes apply to every prompt: the owner is matched by account suffix
-(`OWNER_ACCOUNTS`) before name, and a `ref_no` that doesn't start with the slip's
-`YYYYMMDDHHMM` is swapped for a value the model read that does.
+plus a **majority-class** category baseline (always "food", no model). Two code checks
+apply to every prompt: the owner is matched by account suffix before name, and a
+`ref_no` that doesn't start with the slip's `YYYYMMDDHHMM` is swapped for a value the
+model read that does.
 
 ```bash
-uv run python -m eval.eval_extract                 # all prompts, model calls
-uv run python -m eval.eval_extract --rescore       # current code on saved model output
+uv run python -m eval.eval_extract                         # all prompts (80 model calls)
+uv run python -m eval.eval_extract --rescore               # current code on saved output
+uv run python -m eval.eval_extract --rescore --no-checks   # same output, without the checks
 ```
 
-**Before → after the code changes** (`baseline`, the same saved model output re-scored
-with `--rescore`, so only the code differs):
-
-| | all_key | direction | ref_no |
-|---|---|---|---|
-| before | 5% | 5% | 30% |
-| after | **90%** | **90%** | 65% |
-
-(`v2` scored 55% direction / 0% ref on its first run and 70% / 10% on the next two; its
-first output wasn't kept, so that change mixes the code with run-to-run variance.)
-
-**Current code, all prompts** (v2 and v3 over two fresh runs; v2 identical both times):
+**Results** (`eval/results/extract_*.json`):
 
 | prompt | valid | all_key | date | time | amount | direction | counterparty | ref_no | category |
 |---|---|---|---|---|---|---|---|---|---|
-| baseline | 90% | **90%** | 90% | 60% | 90% | **90%** | 35% | 65% | 5% |
-| fixed_keys | 80% | 0% | 80% | 80% | 80% | 0% | 45% | 0% | 35% |
-| v2 | 100% | 70% | 100% | 100% | 100% | 70% | 45% | 10% | 65% |
-| v3 | 100% | 70–80% | 100% | 100% | 100% | 70–80% | 45% | **70–75%** | 60–65% |
+| baseline | 90% | **90%** | 90% | 60% | 90% | **90%** | 55% | 65% | 5% |
+| fixed_keys | 85% | 85% | 85% | 85% | 85% | 85% | 60% | 0% | 45% |
+| v2 | 100% | 75% | 100% | 100% | 100% | 75% | 60% | 0% | 60% |
+| **v3** | **100%** | **90%** | **100%** | **100%** | **100%** | **90%** | **65%** | **85%** | 50% |
 
-Majority class ("food" every time): category 50%. v3 beats it by 10–15 points.
+Majority class ("food"): category 50%.
+
+**Code checks, on vs off** (same model output, `--no-checks`): baseline `ref_no` 25% →
+65%; everything else unchanged on this set.
 
 **Reading this honestly.**
 
-- The biggest gain came from *code*, not prompts: matching the owner by account number
-  (the model misread the owner's Thai name on every slip) and checking the ref number
-  against the slip's own timestamp.
-- That gain is largest for the generic `baseline` prompt, because it writes out every
-  number it sees (payer account, both ref numbers), so the code has something to
-  check. `v2`/`v3` often return the payer as `null`; their "expense" is then a guess
-  (no payer → treated as a shop receipt), right on these slips only because all 20
-  are payments.
-- `v3` is the only prompt that gets date, time and amount on every slip *and* most ref
-  numbers, and it is the default in the app. `baseline` wins on direction.
-- The test set was also the development set: v3 and the code checks were written
-  after looking at these slips. A held-out set (other banks, incoming transfers) is
-  needed before trusting any of these numbers beyond this bank's layout.
-- Results vary between runs at temperature 0 (v3 moved 5–10 points between two runs).
-
-The slips contain other people's names, so the images are kept out of Git for now
-(see Privacy).
+- v3 is the only prompt that gets date, time and amount on every slip, every draft
+  valid, and the most reference numbers (85%). It ties the generic prompt on `all_key`
+  (90%) and its category guess is no better than always answering "food" (50%).
+- The account-number check matters on the **original** slips, not on this set: the
+  model misread the real owner's Thai name on every one of them (baseline direction
+  5% → 90% with the check), but it reads the fictitious "สมชาย" cleanly. On the
+  originals, v3 scored 70–80% `all_key`, 70–75% `ref_no`, 60–65% category over two runs.
+- Anonymizing changed the scores: a red "TEST DATA" strip along the bottom, next to
+  the reference number, made v3 skip it (85% → 10%); the strip is now on top only.
+- The slips were also the development set: v3 and the checks were written after
+  looking at them. Results vary between runs at temperature 0 (5–10 points).
 
 ## Privacy
 
-Raw slips contain names and account numbers. Originals go in `private/` (gitignored);
-only masked copies are committed. `.env` is gitignored; the key is read from the
+Raw slips contain names and account numbers. Originals stay in `private/` (gitignored);
+only the anonymized copies built by `eval/slips/make_mock.py` are committed. `.env` is gitignored; the key is read from the
 environment.

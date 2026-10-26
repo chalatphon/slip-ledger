@@ -1,0 +1,905 @@
+{
+  "summary": {
+    "n": 20,
+    "json_ok": 1.0,
+    "valid": 0.9,
+    "all_key": 0.9,
+    "date": 0.9,
+    "time": 0.6,
+    "amount": 0.9,
+    "fee": 0.9,
+    "direction": 0.9,
+    "counterparty": 0.55,
+    "ref_no": 0.65,
+    "category": 0.05
+  },
+  "rows": [
+    {
+      "file": "slip_01.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "22:48",
+        "amount": "55.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "ธนาคารกรุงเทพ",
+        "bank": null,
+        "ref_no": "20261022224809031072514AD",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "transaction_type": "รายการสำเร็จ",
+        "date": "22 ต.ค. 69",
+        "time": "22:48",
+        "amount": "55.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "ธนาคารกรุงเทพ",
+        "receiver_account_number": "KB000002127604",
+        "transaction_id": "APIC1792684072734BYG",
+        "fee": "0.00 THB",
+        "reference_number": "336316",
+        "tracking_number": "20261022224809031072514AD"
+      },
+      "errors": [
+        "ref_no '336316' does not match the slip's date/time -> 20261022224809031072514AD"
+      ]
+    },
+    {
+      "file": "slip_02.png",
+      "json_ok": true,
+      "valid": false,
+      "scores": {
+        "date": false,
+        "time": false,
+        "amount": false,
+        "fee": false,
+        "direction": false,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {},
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "22 ต.ค. 69",
+        "time": "20:41",
+        "amount": "15.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_bank": "ธนาคารกรุงเทพ",
+        "biller_id": "010753600031501",
+        "customer_id": "KB00002099646",
+        "reference_code": "KPS004KB000002099646",
+        "invoice_number": "42215689",
+        "fee": "0.00",
+        "invoice_id": "559095",
+        "transaction_id": "20261022204156033678965AD"
+      },
+      "errors": [
+        "counterparty: Input should be a valid string"
+      ]
+    },
+    {
+      "file": "slip_03.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": false,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": null,
+        "amount": "35.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "SCB มณี SHOP (ช่องแข่ง ชำไช)",
+        "bank": null,
+        "ref_no": "20261022201929031975862AD",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "transaction_type": "รายการสำเร็จ",
+        "date": "22 ต.ค. 69, 20:19",
+        "amount": "35.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "SCB มณี SHOP (ช่องแข่ง ชำไช)",
+        "biller_id": "010753600010286",
+        "merchant_code": "014000009795279",
+        "merchant_name": "SCB",
+        "transaction_reference_number": "0000000001467877",
+        "fee": "0.00",
+        "payment_reference_number": "497701",
+        "transaction_id": "20261022201929031975862AD"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_04.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "13:44",
+        "amount": "20.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "Brownbary cafe",
+        "bank": null,
+        "ref_no": "20261022134455031292610AD",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "transaction_type": "รายการสำเร็จ",
+        "date": "22 ต.ค. 69",
+        "time": "13:44",
+        "amount": "20.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "Brownbary cafe",
+        "receiver_biller_id": "010753600031508",
+        "merchant_code": "KB000001774182",
+        "transaction_code": "KPS004KB000001774182",
+        "fee": "0.00",
+        "reference_id": "430799",
+        "transaction_reference": "20261022134455031292610AD"
+      },
+      "errors": [
+        "ref_no None does not match the slip's date/time -> 20261022134455031292610AD"
+      ]
+    },
+    {
+      "file": "slip_05.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "13:02",
+        "amount": "25.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย ธนพล มีสุข",
+        "bank": null,
+        "ref_no": "2026102213024624009825308",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "22 ต.ค. 69",
+        "time": "13:02",
+        "amount": "25.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "sender_bank": "ธนาคารกรุงเทพ",
+        "receiver_name": "นาย ธนพล มีสุข",
+        "receiver_account_number": "089-xxx-1234",
+        "fee": "0.00 THB",
+        "reference_number": "499668",
+        "transaction_id": "2026102213024624009825308"
+      },
+      "errors": [
+        "ref_no '499668' does not match the slip's date/time -> 2026102213024624009825308"
+      ]
+    },
+    {
+      "file": "slip_06.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "09:13",
+        "amount": "80.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "Ksher_SPRINTZ-TECH LAUNDRY",
+        "bank": "ธนาคารกรุงเทพ",
+        "ref_no": "2026102209132324007053608",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "09:13",
+        "amount": "80.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_bank": "ธนาคารกรุงเทพ",
+        "receiver_name": "Ksher_SPRINTZ-TECH LAUNDRY",
+        "service_code": "KSHERQR",
+        "customer_id": "20261022101309897740",
+        "transaction_id": "90045294",
+        "fee": "0.00",
+        "reference_id": "603201",
+        "transaction_details": "2026102209132324007053608"
+      },
+      "errors": [
+        "ref_no '90045294' does not match the slip's date/time -> 2026102209132324007053608"
+      ]
+    },
+    {
+      "file": "slip_07.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-21",
+        "time": "22:30",
+        "amount": "60.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "วิชาย สมบูน",
+        "bank": null,
+        "ref_no": "20261021223034031721811AD",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "21 ต.ค. 69",
+        "time": "22:30",
+        "amount": "60.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "วิชาย สมบูน",
+        "receiver_biller_id": "010753600031501",
+        "transaction_id": "KB000002296273",
+        "reference_number": "KPS004KB000002296273",
+        "invoice_number": "42378195",
+        "fee": "0.00",
+        "qr_code_reference": "429663",
+        "transaction_code": "20261021223034031721811AD"
+      },
+      "errors": [
+        "ref_no 'KPS004KB000002296273' does not match the slip's date/time -> 20261021223034031721811AD"
+      ]
+    },
+    {
+      "file": "slip_08.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-21",
+        "time": "13:55",
+        "amount": "20.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย ประเสริฐ ใจงาม",
+        "bank": null,
+        "ref_no": "2026102113552624003643608",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "21 ต.ค. 69",
+        "time": "13:55",
+        "amount": "20.00",
+        "currency": "THB",
+        "sender": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver": "นาย ประเสริฐ ใจงาม",
+        "receiver_details": "เติมเงินพร้อมเพย์ / G-Wallet",
+        "receiver_wallet_id": "K Plus Wallet",
+        "receiver_e_wallet_number": "00499-000-111-2222",
+        "fee": "0.00",
+        "transaction_id": "393324",
+        "reference_number": "2026102113552624003643608"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_09.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": false,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-18",
+        "time": null,
+        "amount": "59.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท โมเนอร์ ดีดี จำกัด",
+        "bank": null,
+        "ref_no": "630351",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "18 ต.ค. 69, 16:22",
+        "amount": "59.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "บริษัท โมเนอร์ ดีดี จำกัด",
+        "receiver_account_number": "000002206271835",
+        "other_account_number": "478362478PNTX2000000",
+        "additional_account_number": "47836247",
+        "fee": "0.00 THB",
+        "reference_number": "630351",
+        "transaction_id": "2026101816220924003073908"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_10.png",
+      "json_ok": true,
+      "valid": false,
+      "scores": {
+        "date": false,
+        "time": false,
+        "amount": false,
+        "fee": false,
+        "direction": false,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {},
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "17 ต.ค. 69, 19:47",
+        "amount": "47.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_bank": "ธนาคารกรุงเทพ",
+        "payment_method": "BTS Thai QR A920",
+        "service_code": "TRANSQR",
+        "reference_number_1": "26101719473700151402",
+        "reference_number_2": "0007000400001",
+        "fee": "0.00 THB",
+        "invoice_number": "591687",
+        "transaction_id": "2026101719475323009996708"
+      },
+      "errors": [
+        "counterparty: Input should be a valid string"
+      ]
+    },
+    {
+      "file": "slip_11.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": false,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": null,
+        "amount": "318.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท โยชิจัง จำกัด",
+        "bank": null,
+        "ref_no": "534942",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "17 ต.ค. 69",
+        "amount": "318.00",
+        "currency": "THB",
+        "sender": "นาย สมชาย ทดสอบ",
+        "receiver": "บริษัท โยชิจัง จำกัด",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_account_number": "000002206491482",
+        "other_account_number": "470798538P10ZG00000",
+        "branch_code": "BBL01QR",
+        "reference_number": "534942",
+        "transaction_id": "2026101719305423002557208"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_12.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": false,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": null,
+        "amount": "160.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "SIAM CINEPLEX",
+        "bank": null,
+        "ref_no": "APIC1792226678234QK2",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "17 ต.ค. 69, 15:44",
+        "amount": "160.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "SIAM CINEPLEX",
+        "receiver_bill_id": "010753600031501",
+        "receiver_account_number": "KB000001738196",
+        "reference_number": "APIC1792226678234QK2",
+        "fee": "0.00 THB",
+        "transaction_id": "509272",
+        "other_reference": "20261017154459031744289AD"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_13.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": "15:19",
+        "amount": "45.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท สยามพาณิชย์ รับเกล จำกัด",
+        "bank": null,
+        "ref_no": "2026101715195623002464508",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_date": "17 ต.ค. 69",
+        "transaction_time": "15:19",
+        "amount": "45.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "บริษัท สยามพาณิชย์ รับเกล จำกัด",
+        "service_code": "BBL01QR",
+        "reference_number_1": "000002201020880",
+        "reference_number_2": "471372588OP51H00000",
+        "reference_number_3": "47137258",
+        "fee": "0.00",
+        "invoice_number": "342295",
+        "transaction_id": "2026101715195623002464508"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_14.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": false,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-13",
+        "time": null,
+        "amount": "30.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "MAJOR CINEPLEX GROUP",
+        "bank": null,
+        "ref_no": "APIC17918948413017PK",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "13 ต.ค. 69, 19:34",
+        "amount": "30.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "MAJOR CINEPLEX GROUP",
+        "receiver_biller_id": "010753600031501",
+        "receiver_account_number": "KB000001737860",
+        "reference_number": "APIC17918948413017PK",
+        "customer_id": "495516",
+        "transaction_id": "20261013193418033087124AD"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_15.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": false,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": null,
+        "amount": "300.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "SIAM CINEPLEX",
+        "bank": null,
+        "ref_no": "APIC1792225944785ZOB",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "bank_name": "Bangkok Bank",
+        "transaction_type": "รายการสำเร็จ",
+        "date": "17 ต.ค. 69, 15:32",
+        "amount": "300.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "SIAM CINEPLEX",
+        "receiver_bill_id": "010753600031501",
+        "receiver_account_number": "KB000001738196",
+        "reference_number": "APIC1792225944785ZOB",
+        "fee": "0.00 THB",
+        "transaction_id": "440860",
+        "tracking_number": "20261017153256033247903AD"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_16.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-12",
+        "time": "18:39",
+        "amount": "300.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย สมชาย ทดสอบ",
+        "bank": null,
+        "ref_no": "2026101218391523005278808",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "transaction_type": "รายการสำเร็จ",
+        "date": "12 ต.ค. 69",
+        "time": "18:39",
+        "amount": "300.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "นาย สมชาย ทดสอบ",
+        "receiver_account_number": "1-2345-0xxxx-67-8",
+        "fee": "0.00 THB",
+        "reference_id": "370598",
+        "tracking_number": "2026101218391523005278808"
+      },
+      "errors": [
+        "ref_no None does not match the slip's date/time -> 2026101218391523005278808"
+      ]
+    },
+    {
+      "file": "slip_17.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-07",
+        "time": "19:20",
+        "amount": "59.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท โนเออร์ ดีดีว จำกัด",
+        "bank": null,
+        "ref_no": "2026100719202223001718308",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "transaction_type": "รายการสำเร็จ",
+        "date": "07 ต.ค. 69",
+        "time": "19:20",
+        "amount": "59.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "บริษัท โนเออร์ ดีดีว จำกัด",
+        "service_code": "BBL01QR",
+        "reference_number_1": "000002205516636",
+        "reference_number_2": "478357948GSDOM000000",
+        "reference_number_3": "47835794",
+        "fee": "0.00",
+        "qr_code_reference": "365172",
+        "transaction_id": "2026100719202223001718308"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_18.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-04",
+        "time": "17:32",
+        "amount": "59.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท โนเออร์ ดีดีว จำกัด",
+        "bank": null,
+        "ref_no": "2026100417323923007655708",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "04 ต.ค. 69",
+        "time": "17:32",
+        "amount": "59.00",
+        "currency": "THB",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver_name": "บริษัท โนเออร์ ดีดีว จำกัด",
+        "service_code": "BBL01QR",
+        "transaction_id": "000002213032238",
+        "reference_number_1": "478343048EA8TS000000",
+        "reference_number_2": "47834304",
+        "fee": "0.00",
+        "qr_code_reference": "676391",
+        "transaction_id_2": "2026100417323923007655708"
+      },
+      "errors": [
+        "ref_no '000002213032238' does not match the slip's date/time -> 2026100417323923007655708"
+      ]
+    },
+    {
+      "file": "slip_19.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-04",
+        "time": "13:31",
+        "amount": "4979.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "น.ส. สุดา รักดี",
+        "bank": null,
+        "ref_no": "2026100413312023003912908",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "04 ต.ค. 69",
+        "time": "13:31",
+        "amount": "4,979.00",
+        "currency": "THB",
+        "sender": "นาย สมชาย ทดสอบ",
+        "sender_account_number": "226-0-xxx569",
+        "receiver": "น.ส. สุดา รักดี",
+        "receiver_account_number": "081-xxx-5678",
+        "fee": "0.00 THB",
+        "reference_number": "304437",
+        "transaction_id": "2026100413312023003912908"
+      },
+      "errors": [
+        "ref_no '304437' does not match the slip's date/time -> 2026100413312023003912908"
+      ]
+    },
+    {
+      "file": "slip_20.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": true,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-04",
+        "time": "13:30",
+        "amount": "279.76",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย กิตติ ชัยมงคล",
+        "bank": null,
+        "ref_no": "2026100413301324007795308",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "04 ต.ค. 69",
+        "time": "13:30",
+        "amount": "279.76",
+        "currency": "THB",
+        "sender": "นาย สมชาย ทดสอบ",
+        "receiver": "นาย กิตติ ชัยมงคล",
+        "receiver_account_details": "เต็มเงินพร้อมเพย์ / G-Wallet",
+        "receiver_phone_number": "00499-000-333-4444",
+        "fee": "0.00 THB",
+        "transaction_id": "520748",
+        "reference_number": "2026100413301324007795308"
+      },
+      "errors": []
+    }
+  ]
+}

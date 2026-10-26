@@ -1,0 +1,868 @@
+{
+  "summary": {
+    "n": 20,
+    "json_ok": 1.0,
+    "valid": 1.0,
+    "all_key": 0.75,
+    "date": 1.0,
+    "time": 1.0,
+    "amount": 1.0,
+    "fee": 1.0,
+    "direction": 0.75,
+    "counterparty": 0.6,
+    "ref_no": 0.0,
+    "category": 0.6
+  },
+  "rows": [
+    {
+      "file": "slip_01.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "22:48",
+        "amount": "55.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "LAT KRABANG 54",
+        "bank": null,
+        "ref_no": "KB000002127604",
+        "category": "other",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "22:48",
+        "amount": "55.00",
+        "fee": "0.00",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "LAT KRABANG 54",
+        "receiver_bank": null,
+        "ref_no": "KB000002127604",
+        "memo": null,
+        "category": "other"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_02.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "20:41",
+        "amount": "15.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "ธนาคารกรุงเทพ",
+        "bank": null,
+        "ref_no": "KB00002099646",
+        "category": "other",
+        "memo": "42215689",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "20:41",
+        "amount": "15.00",
+        "fee": "0.00",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "ธนาคารกรุงเทพ",
+        "receiver_bank": null,
+        "ref_no": "KB00002099646",
+        "memo": "42215689",
+        "category": "other"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_03.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "20:19",
+        "amount": "35.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "SCB มณี SHOP (ช่องแข้ง ชาใส)",
+        "bank": null,
+        "ref_no": "014000009795279",
+        "category": "food",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "20:19",
+        "amount": "35.00",
+        "fee": "0",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "SCB มณี SHOP (ช่องแข้ง ชาใส)",
+        "receiver_bank": null,
+        "ref_no": "014000009795279",
+        "memo": null,
+        "category": "food"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_04.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "13:44",
+        "amount": "20.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "Brownbary cafe",
+        "bank": null,
+        "ref_no": "KB000001774182",
+        "category": "food",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "13:44",
+        "amount": "20.00",
+        "fee": "0",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "Brownbary cafe",
+        "receiver_bank": null,
+        "ref_no": "KB000001774182",
+        "memo": null,
+        "category": "food"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_05.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "13:02",
+        "amount": "25.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย ธนพล มีสุข",
+        "bank": null,
+        "ref_no": "226-0-xxx569",
+        "category": "transfer",
+        "memo": "พร้อมเพย์",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "13:02",
+        "amount": "25.00",
+        "fee": "0.00",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "นาย ธนพล มีสุข",
+        "receiver_bank": null,
+        "ref_no": "226-0-xxx569",
+        "memo": "พร้อมเพย์",
+        "category": "transfer"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_06.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-22",
+        "time": "09:13",
+        "amount": "80.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "ธนาคารกรุงเทพ",
+        "bank": null,
+        "ref_no": "2026102201309897740",
+        "category": "transfer",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "22 ต.ค. 69",
+        "time": "09:13",
+        "amount": "80.00",
+        "fee": "0",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "ธนาคารกรุงเทพ",
+        "receiver_bank": null,
+        "ref_no": "2026102201309897740",
+        "memo": null,
+        "category": "transfer"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_07.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-21",
+        "time": "22:30",
+        "amount": "60.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "ธนาคารกรุงเทพ",
+        "bank": null,
+        "ref_no": "KB000002296273",
+        "category": "other",
+        "memo": "42378195",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "21 ต.ค. 69",
+        "time": "22:30",
+        "amount": "60.00",
+        "fee": "0.00",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "ธนาคารกรุงเทพ",
+        "receiver_bank": null,
+        "ref_no": "KB000002296273",
+        "memo": "42378195",
+        "category": "other"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_08.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-21",
+        "time": "13:55",
+        "amount": "20.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย ประเสริฐ ใจงาม",
+        "bank": null,
+        "ref_no": "393324",
+        "category": "transfer",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "21 ต.ค. 69",
+        "time": "13:55",
+        "amount": "20.00",
+        "fee": "0.00",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "นาย ประเสริฐ ใจงาม",
+        "receiver_bank": null,
+        "ref_no": "393324",
+        "memo": null,
+        "category": "transfer"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_09.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-18",
+        "time": "16:22",
+        "amount": "59.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท โมเนอร์ ดีดี จำกัด",
+        "bank": null,
+        "ref_no": "000002206271835",
+        "category": "other",
+        "memo": "หมายเลขประจำตัวลูกค้า 478362478PNTX2000000",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "18 ต.ค. 69",
+        "time": "16:22",
+        "amount": "59.00",
+        "fee": "0",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "บริษัท โมเนอร์ ดีดี จำกัด",
+        "receiver_bank": null,
+        "ref_no": "000002206271835",
+        "memo": "หมายเลขประจำตัวลูกค้า 478362478PNTX2000000",
+        "category": "other"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_10.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": false,
+        "counterparty": false,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": "19:47",
+        "amount": "47.00",
+        "fee": "0.00",
+        "direction": "unknown",
+        "counterparty": "นาย สมชาย ทศสอบ",
+        "bank": null,
+        "ref_no": "26101719473700151402",
+        "category": "transport",
+        "memo": "BTS Thai QR A920",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "17 ต.ค. 69",
+        "time": "19:47",
+        "amount": "47.00",
+        "fee": "0",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "นาย สมชาย ทศสอบ",
+        "receiver_bank": null,
+        "ref_no": "26101719473700151402",
+        "memo": "BTS Thai QR A920",
+        "category": "transport"
+      },
+      "errors": [
+        "owner found on the payee side but no payer was read - check direction"
+      ]
+    },
+    {
+      "file": "slip_11.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": "19:30",
+        "amount": "318.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท ไทยเจริญ จำกัด",
+        "bank": null,
+        "ref_no": "000002206491482",
+        "category": "shopping",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "17 ต.ค. 69",
+        "time": "19:30",
+        "amount": "318.00",
+        "fee": null,
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "บริษัท ไทยเจริญ จำกัด",
+        "receiver_bank": null,
+        "ref_no": "000002206491482",
+        "memo": null,
+        "category": "shopping"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_12.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": "15:44",
+        "amount": "160.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "SIAM CINEPLEX",
+        "bank": null,
+        "ref_no": "KB000001738196",
+        "category": "entertainment",
+        "memo": "APIC1792226678234QK2",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "17 ต.ค. 69",
+        "time": "15:44",
+        "amount": "160.00",
+        "fee": "0",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "SIAM CINEPLEX",
+        "receiver_bank": null,
+        "ref_no": "KB000001738196",
+        "memo": "APIC1792226678234QK2",
+        "category": "entertainment"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_13.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": false,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": "15:19",
+        "amount": "45.00",
+        "fee": "0.00",
+        "direction": "unknown",
+        "counterparty": "นาย สมชาย ทดสอบ",
+        "bank": null,
+        "ref_no": "226-0-xxx569",
+        "category": "transfer",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "17 ต.ค. 69",
+        "time": "15:19",
+        "amount": "45.00",
+        "fee": "0.00",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "นาย สมชาย ทดสอบ",
+        "receiver_bank": null,
+        "ref_no": "226-0-xxx569",
+        "memo": null,
+        "category": "transfer"
+      },
+      "errors": [
+        "owner found on the payee side but no payer was read - check direction"
+      ]
+    },
+    {
+      "file": "slip_14.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-13",
+        "time": "19:34",
+        "amount": "30.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "MAJOR CINEPLEX GROUP",
+        "bank": null,
+        "ref_no": "KB000001737860",
+        "category": "entertainment",
+        "memo": "APIC17918948413017PK",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "13 ต.ค. 69",
+        "time": "19:34",
+        "amount": "30.00",
+        "fee": "0",
+        "sender_name": "นาย สมชาย ทัศสอบ",
+        "sender_bank": null,
+        "receiver_name": "MAJOR CINEPLEX GROUP",
+        "receiver_bank": null,
+        "ref_no": "KB000001737860",
+        "memo": "APIC17918948413017PK",
+        "category": "entertainment"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_15.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-17",
+        "time": "15:32",
+        "amount": "300.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "SIAM CINEPLEX",
+        "bank": null,
+        "ref_no": "KB000001738196",
+        "category": "entertainment",
+        "memo": "APIC1792225944785ZOB",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "17 ต.ค. 69",
+        "time": "15:32",
+        "amount": "300.00",
+        "fee": "0",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "SIAM CINEPLEX",
+        "receiver_bank": null,
+        "ref_no": "KB000001738196",
+        "memo": "APIC1792225944785ZOB",
+        "category": "entertainment"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_16.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": false,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-12",
+        "time": "18:39",
+        "amount": "300.00",
+        "fee": "0.00",
+        "direction": "unknown",
+        "counterparty": "นาย สมชาย ทดสอบ",
+        "bank": null,
+        "ref_no": "226-0-xxx569",
+        "category": "transfer",
+        "memo": "พร้อมเพย์",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "12 ต.ค. 69",
+        "time": "18:39",
+        "amount": "300.00",
+        "fee": "0.00",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "นาย สมชาย ทดสอบ",
+        "receiver_bank": null,
+        "ref_no": "226-0-xxx569",
+        "memo": "พร้อมเพย์",
+        "category": "transfer"
+      },
+      "errors": [
+        "owner found on the payee side but no payer was read - check direction"
+      ]
+    },
+    {
+      "file": "slip_17.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-07",
+        "time": "19:20",
+        "amount": "59.00",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "บริษัท โม่เนอร์ ดีดีว จำกัด",
+        "bank": null,
+        "ref_no": "000002205516636",
+        "category": "food",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "07 ต.ค. 69",
+        "time": "19:20",
+        "amount": "59.00",
+        "fee": "0",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "บริษัท โม่เนอร์ ดีดีว จำกัด",
+        "receiver_bank": null,
+        "ref_no": "000002205516636",
+        "memo": null,
+        "category": "food"
+      },
+      "errors": []
+    },
+    {
+      "file": "slip_18.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": false,
+        "counterparty": false,
+        "ref_no": false,
+        "category": false
+      },
+      "draft": {
+        "date": "2026-10-04",
+        "time": "17:32",
+        "amount": "59.00",
+        "fee": "0.00",
+        "direction": "unknown",
+        "counterparty": "นาย สมชาย ทดสอบ",
+        "bank": null,
+        "ref_no": "226-0-xxx569",
+        "category": "transfer",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "04 ต.ค. 69",
+        "time": "17:32",
+        "amount": "59.00",
+        "fee": "0",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "นาย สมชาย ทดสอบ",
+        "receiver_bank": null,
+        "ref_no": "226-0-xxx569",
+        "memo": null,
+        "category": "transfer"
+      },
+      "errors": [
+        "owner found on the payee side but no payer was read - check direction"
+      ]
+    },
+    {
+      "file": "slip_19.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": false,
+        "counterparty": false,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-04",
+        "time": "13:31",
+        "amount": "4979.00",
+        "fee": "0.00",
+        "direction": "unknown",
+        "counterparty": "นาย สมชาย ทดสอบ",
+        "bank": null,
+        "ref_no": "226-0-xxx569",
+        "category": "transfer",
+        "memo": "ธนาคารกรุงเทพ",
+        "source": "slip"
+      },
+      "raw": {
+        "date": "04 ต.ค. 69",
+        "time": "13:31",
+        "amount": "4979.00",
+        "fee": "0.00",
+        "sender_name": null,
+        "sender_bank": null,
+        "receiver_name": "นาย สมชาย ทดสอบ",
+        "receiver_bank": null,
+        "ref_no": "226-0-xxx569",
+        "memo": "ธนาคารกรุงเทพ",
+        "category": "transfer"
+      },
+      "errors": [
+        "owner found on the payee side but no payer was read - check direction"
+      ]
+    },
+    {
+      "file": "slip_20.png",
+      "json_ok": true,
+      "valid": true,
+      "scores": {
+        "date": true,
+        "time": true,
+        "amount": true,
+        "fee": true,
+        "direction": true,
+        "counterparty": true,
+        "ref_no": false,
+        "category": true
+      },
+      "draft": {
+        "date": "2026-10-04",
+        "time": "13:30",
+        "amount": "279.76",
+        "fee": "0.00",
+        "direction": "expense",
+        "counterparty": "นาย กิตติ ชัยมงคล",
+        "bank": null,
+        "ref_no": "520748",
+        "category": "transfer",
+        "memo": null,
+        "source": "slip"
+      },
+      "raw": {
+        "date": "04 ต.ค. 69",
+        "time": "13:30",
+        "amount": "279.76",
+        "fee": "0.00",
+        "sender_name": "นาย สมชาย ทดสอบ",
+        "sender_bank": null,
+        "receiver_name": "นาย กิตติ ชัยมงคล",
+        "receiver_bank": null,
+        "ref_no": "520748",
+        "memo": null,
+        "category": "transfer"
+      },
+      "errors": []
+    }
+  ]
+}
