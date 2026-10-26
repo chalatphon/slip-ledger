@@ -6,7 +6,8 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 
 from app import config
 from app.repositories import transactions as repo
-from app.schemas import AskRequest, AskResponse, ExtractResult, StoredTransaction, Transaction
+from app.schemas import (AskRequest, AskResponse, ExtractResult, StoredTransaction,
+                         TextEntryRequest, Transaction)
 from app.services import ledger
 
 router = APIRouter(prefix="/api")
@@ -28,6 +29,12 @@ async def extract(image: UploadFile = File(...)) -> ExtractResult:
         return await ledger.extract_draft(data, image.content_type)
     except ledger.UploadError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.post("/extract-text", response_model=ExtractResult)
+async def extract_text(req: TextEntryRequest) -> ExtractResult:
+    """Type a transaction in words -> a validated draft (not saved yet)."""
+    return await ledger.draft_from_text(req.text)
 
 
 @router.post("/transactions", response_model=StoredTransaction, status_code=201)

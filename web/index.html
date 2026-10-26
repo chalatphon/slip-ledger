@@ -14,12 +14,18 @@
 
   <main>
     <section class="card">
-      <h2>1. อัปโหลดสลิป / ใบเสร็จ</h2>
+      <h2>1. เพิ่มรายการ</h2>
       <p class="muted">เลือกได้หลายรูปพร้อมกัน (สูงสุด 20 รูปต่อครั้ง)</p>
       <div class="row">
         <input type="file" id="files" accept="image/png,image/jpeg,image/webp" multiple>
         <button id="extract">อ่านสลิป</button>
       </div>
+      <p class="divider muted">หรือพิมพ์เอง</p>
+      <div class="row">
+        <input id="typed" maxlength="500" placeholder="เช่น ข้าวมันไก่ 50 บาท เมื่อวาน">
+        <button id="parse-text">แปลงเป็นรายการ</button>
+      </div>
+      <button id="blank-form" class="secondary link">กรอกฟอร์มเปล่าเองทั้งหมด</button>
       <p id="extract-status" class="muted"></p>
       <div id="batch-actions" hidden>
         <button id="save-all">บันทึกทุกรายการที่พร้อม</button>
@@ -54,6 +60,7 @@
           <label>ธนาคาร <input name="bank"></label>
           <label>เลขอ้างอิง <input name="ref_no"></label>
           <label class="wide">บันทึก <input name="memo"></label>
+          <input type="hidden" name="source" value="slip">
         </div>
         <p class="errors warn"></p>
         <div class="row">

@@ -45,6 +45,10 @@ class ExtractResult(BaseModel):
     errors: list[str] = []
 
 
+class TextEntryRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=500)
+
+
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=500)
 

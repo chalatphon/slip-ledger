@@ -24,6 +24,21 @@ async def complete(messages: list[dict], *, max_tokens: int = 500) -> str:
     return resp.choices[0].message.content or ""
 
 
+async def complete_json(messages: list[dict]) -> dict:
+    """One call that must return a JSON object. The proxy ignores `response_format`, so
+    we parse the reply ourselves and, if it isn't JSON, show the model its own output
+    once and ask again (parse-then-repair). Never raises: failure is `{"_error": ...}`."""
+    first = await complete(messages)
+    if (obj := parse_json_object(first)) is not None:
+        return obj
+    repaired = await complete([
+        *messages,
+        {"role": "assistant", "content": first},
+        {"role": "user", "content": "That was not valid JSON. Reply with ONLY the JSON object."},
+    ])
+    return parse_json_object(repaired) or {"_error": "model did not return JSON", "_raw": first[:500]}
+
+
 def image_part(image_bytes: bytes, mime: str) -> dict:
     """An image as an OpenAI-style content part (data URL) — gemma-4-E4B-it is multimodal."""
     data_url = f"data:{mime};base64,{base64.b64encode(image_bytes).decode()}"

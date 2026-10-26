@@ -3,7 +3,7 @@
 const $ = (id) => document.getElementById(id);
 const CATEGORIES = ["food", "transport", "shopping", "bills", "health", "education",
   "entertainment", "transfer", "salary", "other"];
-const FIELDS = ["date", "time", "amount", "fee", "direction", "category", "counterparty", "bank", "ref_no", "memo"];
+const FIELDS = ["date", "time", "amount", "fee", "direction", "category", "counterparty", "bank", "ref_no", "memo", "source"];
 const MAX_FILES = 20;
 const PARALLEL = 2; // stay well under the proxy's rate limit
 
@@ -15,19 +15,36 @@ async function api(path, options = {}) {
 }
 
 // 1. upload several images -> one editable draft card per image
-function newDraftCard(file) {
+function newDraftCard(title, file) {
   const form = $("draft-template").content.firstElementChild.cloneNode(true);
   form.category.append(...CATEGORIES.map((c) => new Option(c, c)));
-  form.querySelector(".fname").textContent = file.name;
+  form.querySelector(".fname").textContent = title;
   const img = form.querySelector(".thumb");
-  img.src = URL.createObjectURL(file);
-  img.onload = () => URL.revokeObjectURL(img.src);
+  if (file) {
+    img.src = URL.createObjectURL(file);
+    img.onload = () => URL.revokeObjectURL(img.src);
+  } else {
+    img.hidden = true;
+  }
   form.querySelector(".status").textContent = "รอคิว…";
-  form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = true));
+  setDisabled(form, true);
   form.onsubmit = (ev) => { ev.preventDefault(); saveDraft(form); };
   form.querySelector(".skip").onclick = () => { form.remove(); updateBatchActions(); };
   $("drafts").append(form);
+  updateBatchActions();
   return form;
+}
+
+const setDisabled = (form, on) => form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = on));
+
+// Put a /api/extract or /api/extract-text result into its card.
+function fillCard(form, res) {
+  const d = res.draft || {};
+  for (const k of FIELDS) form[k].value = d[k] ?? (k === "fee" ? "0" : k === "source" ? "slip" : "");
+  form.querySelector(".raw").textContent = JSON.stringify(res.raw, null, 2);
+  form.querySelector(".errors").textContent = res.errors.length ? "ตรวจสอบ: " + res.errors.join("; ") : "";
+  setStatus(form, res.draft ? "พร้อมบันทึก — ตรวจข้อมูลก่อน" : "อ่านได้ไม่ครบ กรอกช่องที่ขาดเอง", res.draft ? null : "failed");
+  form.dataset.ready = res.draft ? "1" : "";
 }
 
 function setStatus(form, text, cls) {
@@ -41,17 +58,11 @@ async function extractInto(form, file) {
   const fd = new FormData();
   fd.append("image", file);
   try {
-    const res = await api("/api/extract", { method: "POST", body: fd });
-    const d = res.draft || {};
-    for (const k of FIELDS) form[k].value = d[k] ?? (k === "fee" ? "0" : "");
-    form.querySelector(".raw").textContent = JSON.stringify(res.raw, null, 2);
-    form.querySelector(".errors").textContent = res.errors.length ? "ตรวจสอบ: " + res.errors.join("; ") : "";
-    setStatus(form, res.draft ? "พร้อมบันทึก — ตรวจข้อมูลก่อน" : "อ่านได้ไม่ครบ กรอกช่องที่ขาดเอง", res.draft ? null : "failed");
-    form.dataset.ready = res.draft ? "1" : "";
+    fillCard(form, await api("/api/extract", { method: "POST", body: fd }));
   } catch (e) {
     setStatus(form, "อ่านไม่ได้: " + e.message, "failed");
   }
-  form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = false));
+  setDisabled(form, false);
 }
 
 async function saveDraft(form) {
@@ -64,7 +75,7 @@ async function saveDraft(form) {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
     });
     setStatus(form, "บันทึกแล้ว ✓", "saved");
-    form.querySelectorAll("input, select, button").forEach((el) => (el.disabled = true));
+    setDisabled(form, true);
     form.querySelector(".errors").textContent = "";
     loadRows();
     return true;
@@ -82,8 +93,7 @@ $("extract").onclick = async () => {
   let files = [...$("files").files];
   if (!files.length) return;
   if (files.length > MAX_FILES) files = files.slice(0, MAX_FILES);
-  const jobs = files.map((f) => [newDraftCard(f), f]);
-  updateBatchActions();
+  const jobs = files.map((f) => [newDraftCard(f.name, f), f]);
   $("extract").disabled = true;
   $("files").value = "";
   let done = 0;
@@ -101,6 +111,41 @@ $("extract").onclick = async () => {
   };
   await Promise.all(Array.from({ length: PARALLEL }, worker));
   $("extract").disabled = false;
+};
+
+// Typed entry: the model turns one line into a draft card, same review flow as a slip.
+$("parse-text").onclick = async () => {
+  const text = $("typed").value.trim();
+  if (!text) return;
+  const form = newDraftCard(`พิมพ์: ${text}`, null);
+  setStatus(form, "กำลังแปลง…");
+  $("parse-text").disabled = true;
+  try {
+    fillCard(form, await api("/api/extract-text", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }),
+    }));
+    $("typed").value = "";
+  } catch (e) {
+    setStatus(form, "แปลงไม่ได้: " + e.message, "failed");
+  } finally {
+    setDisabled(form, false);
+    $("parse-text").disabled = false;
+  }
+};
+$("typed").onkeydown = (e) => { if (e.key === "Enter") $("parse-text").click(); };
+
+// A blank card for entering everything by hand — no model call at all.
+$("blank-form").onclick = () => {
+  const form = newDraftCard("กรอกเอง", null);
+  form.date.value = new Date().toLocaleDateString("sv-SE"); // YYYY-MM-DD, local time
+  form.direction.value = "expense";
+  form.category.value = "other";
+  form.fee.value = "0";
+  form.source.value = "manual";
+  setStatus(form, "กรอกข้อมูลแล้วกดบันทึก");
+  setDisabled(form, false);
+  form.dataset.ready = "1";
+  form.counterparty.focus();
 };
 
 // Save every draft that read cleanly; leave the ones needing attention.

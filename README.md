@@ -1,8 +1,8 @@
 # Slip Ledger
 
-Turn photos of **Thai bank transfer slips and shop receipts** into a clean income /
-expense ledger, then **ask questions about your money in Thai or English**
-("เดือนนี้ใช้ค่ากินไปเท่าไหร่?").
+Turn photos of **Thai bank transfer slips and shop receipts** — or a line you type,
+like "ข้าวมันไก่ 50 บาท เมื่อวาน" — into a clean income / expense ledger, then **ask
+questions about your money in Thai or English** ("เดือนนี้ใช้ค่ากินไปเท่าไหร่?").
 
 Built for the KMITL *Building LLM-Powered Applications* capstone. All model calls go
 through the class LiteLLM proxy (`gemma-4-E4B-it`) with the OpenAI client.
@@ -43,6 +43,7 @@ app/
   routers/api.py            HTTP only: parse request, call a service, map errors to status codes
   services/ledger.py        use-cases: extract a draft, save, list, ask
   services/extractor.py     image -> JSON (parse + repair) -> normalized, validated draft
+  services/text_entry.py    a typed line -> the same kind of draft (relative dates resolved in code)
   repositories/transactions.py   the only SQL that writes the ledger
   agent/loop.py, tools.py   the agent loop and its guarded SQL tool
   normalize.py              deterministic Thai date / amount / time parsing

@@ -43,3 +43,6 @@ button.secondary { background: none; color: var(--text); border: 1px solid var(-
 .draft-head p { margin: 2px 0 0; }
 .thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
 .draft .row { margin-top: 8px; }
+.divider { margin: 16px 0 8px; font-size: .85rem; }
+button.link { margin-top: 8px; padding: 4px 0; border: none; text-decoration: underline; }
+.thumb[hidden] { display: none; }

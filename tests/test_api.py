@@ -82,3 +82,14 @@ async def test_agent_stops_at_max_steps(client, monkeypatch):
     stub_replies(monkeypatch, ['ACTION: sql("SELECT 1")'] * 5 + ["ANSWER: forced"])
     r = await client.post("/api/ask", json={"question": "loop forever"})
     assert r.json() == {**r.json(), "answer": "forced", "stopped_by": "max_steps"}
+
+
+async def test_extract_text_returns_manual_draft(client, monkeypatch):
+    stub_replies(monkeypatch, ['{"amount": "65", "counterparty": "Cafe Amazon", "date": null, "direction": "expense", "category": "food"}'])
+    r = await client.post("/api/extract-text", json={"text": "กาแฟ 65 บาท"})
+    draft = r.json()["draft"]
+    assert draft["amount"] == "65.00" and draft["source"] == "manual" and draft["category"] == "food"
+
+
+async def test_extract_text_rejects_empty(client):
+    assert (await client.post("/api/extract-text", json={"text": ""})).status_code == 422

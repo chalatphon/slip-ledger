@@ -50,6 +50,21 @@ def parse_date(text: str | None) -> date | None:
     return None
 
 
+RELATIVE_DAYS = {"วันนี้": 0, "today": 0, "เมื่อวานซืน": 2, "เมื่อวาน": 1, "yesterday": 1}
+
+
+def parse_relative_date(text: str | None, today: date) -> date | None:
+    """'เมื่อวาน' / 'yesterday' / '18 ต.ค. 69' -> a date. Relative words are resolved in
+    code against `today` (longest word first, so 'เมื่อวานซืน' isn't read as 'เมื่อวาน')."""
+    if not text:
+        return None
+    s = str(text).strip().lower()
+    for word, back in sorted(RELATIVE_DAYS.items(), key=lambda kv: -len(kv[0])):
+        if word in s:
+            return date.fromordinal(today.toordinal() - back)
+    return parse_date(s)
+
+
 def _safe_date(y: int, mo: int, d: int) -> date | None:
     try:
         return date(y, mo, d)

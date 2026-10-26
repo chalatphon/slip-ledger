@@ -197,15 +197,7 @@ async def read_image(image_bytes: bytes, mime: str, prompt: str = "v3") -> dict:
     `response_format`, so we parse the reply ourselves and, if it isn't JSON, show the
     model its own output once and ask again (parse-then-repair)."""
     content = [{"type": "text", "text": PROMPTS[prompt]}, llm.image_part(image_bytes, mime)]
-    first = await llm.complete([{"role": "user", "content": content}])
-    if (obj := llm.parse_json_object(first)) is not None:
-        return obj
-    repaired = await llm.complete([
-        {"role": "user", "content": content},
-        {"role": "assistant", "content": first},
-        {"role": "user", "content": "That was not valid JSON. Reply with ONLY the JSON object."},
-    ])
-    return llm.parse_json_object(repaired) or {"_error": "model did not return JSON", "_raw": first[:500]}
+    return await llm.complete_json([{"role": "user", "content": content}])
 
 
 async def extract(image_bytes: bytes, mime: str, prompt: str = "v3") -> ExtractResult:

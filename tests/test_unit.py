@@ -169,3 +169,24 @@ def test_owner_on_payee_side_without_payer_is_unknown_not_invalid():
     res = to_draft(raw, [], ["569"])
     assert res.draft is not None and res.draft.direction == "unknown"
     assert any("payee side" in e for e in res.errors)
+
+
+def test_relative_dates_resolved_in_code():
+    today = date(2026, 10, 26)
+    assert normalize.parse_relative_date("เมื่อวาน", today) == date(2026, 10, 25)
+    assert normalize.parse_relative_date("เมื่อวานซืน", today) == date(2026, 10, 24)
+    assert normalize.parse_relative_date("Yesterday", today) == date(2026, 10, 25)
+    assert normalize.parse_relative_date("18 ต.ค. 69", today) == date(2026, 10, 18)
+
+
+def test_text_to_draft():
+    from app.services.text_entry import text_to_draft
+    today = date(2026, 10, 26)
+    res = text_to_draft({"amount": "50", "counterparty": "ข้าวมันไก่", "date": "เมื่อวาน",
+                         "direction": "expense", "category": "food"}, today)
+    d = res.draft
+    assert (d.date, d.amount, d.direction, d.category, d.source) == (
+        date(2026, 10, 25), Decimal("50.00"), "expense", "food", "manual")
+    # No date typed -> today; an odd direction -> expense; missing amount -> reported, not raised
+    assert text_to_draft({"amount": "65", "counterparty": "กาแฟ", "direction": "?"}, today).draft.date == today
+    assert text_to_draft({"counterparty": "กาแฟ"}, today).draft is None

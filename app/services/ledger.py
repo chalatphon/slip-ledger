@@ -7,7 +7,7 @@ from app import config
 from app.agent import loop
 from app.repositories import transactions as repo
 from app.schemas import AskResponse, ExtractResult, StoredTransaction, Transaction
-from app.services import extractor
+from app.services import extractor, text_entry
 
 
 class UploadError(ValueError):
@@ -34,6 +34,11 @@ async def extract_draft(data: bytes, content_type: str | None) -> ExtractResult:
     """Read a slip into a draft. Nothing is saved — the user confirms first."""
     mime = check_upload(data, content_type)
     return await extractor.extract(data, mime)
+
+
+async def draft_from_text(text: str) -> ExtractResult:
+    """A typed line ("กาแฟ 65 บาท เมื่อวาน") -> a draft. Nothing is saved — the user confirms first."""
+    return await text_entry.parse(text.strip())
 
 
 def save(db: sqlite3.Connection, tx: Transaction) -> StoredTransaction:
