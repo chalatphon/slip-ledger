@@ -154,12 +154,12 @@ first output wasn't kept, so that change mixes the code with run-to-run variance
 
 | prompt | valid | all_key | date | time | amount | direction | counterparty | ref_no | category |
 |---|---|---|---|---|---|---|---|---|---|
-| baseline | 90% | **90%** | 90% | 60% | 90% | **90%** | 35% | 65% | 6% |
-| fixed_keys | 80% | 0% | 80% | 80% | 80% | 0% | 45% | 0% | 44% |
-| v2 | 100% | 70% | 100% | 100% | 100% | 70% | 45% | 10% | 69% |
-| v3 | 100% | 70–80% | 100% | 100% | 100% | 70–80% | 45% | **70–75%** | 62–69% |
+| baseline | 90% | **90%** | 90% | 60% | 90% | **90%** | 35% | 65% | 5% |
+| fixed_keys | 80% | 0% | 80% | 80% | 80% | 0% | 45% | 0% | 35% |
+| v2 | 100% | 70% | 100% | 100% | 100% | 70% | 45% | 10% | 65% |
+| v3 | 100% | 70–80% | 100% | 100% | 100% | 70–80% | 45% | **70–75%** | 60–65% |
 
-Majority class ("food" every time): category 38%.
+Majority class ("food" every time): category 50%. v3 beats it by 10–15 points.
 
 **Reading this honestly.**
 
